@@ -7,7 +7,7 @@ The initial thought will be to visualize some people in a city and one of them g
 
 Mat Buckland's <b>Programming Game AI by Example</b>( Publication Date: September 30, 2004 | ISBN-10: 1556220782 | ISBN-13: 978-1556220784 | Edition: 1 ) will be very helpful to understand the steering behavior and finite state machines. You can find the book <a href="http://www.amazon.com/Programming-Game-Example-Mat-Buckland/dp/1556220782/">HERE</a>
 
-The UML diagram can be found in here:https://github.com/IanZhang1990/Disease/tree/master/DiseaseGame/UML. You may need Umlet, which can be downloaded <a href="www.umlet.com">HERE</a>, to open the .uxf file.
+The UML diagram can be found in <a href="https://github.com/IanZhang1990/Disease/tree/master/DiseaseGame/UML">HERE</a>. You may need Umlet, which can be downloaded <a href="www.umlet.com">HERE</a>, to open the .uxf file.
 
 As is implied, the project is written in <b><a href="http://www.python.org/">Python</a></b>, so you may need to install <b><a href="http://www.python.org/">Python 2.7.4</a></b> first. And I also included Pygame package, which can be downloaded <a href="http://www.pygame.org/news.html">HERE</a>, and installed easily. Btw, there is a nice tutorial of Pygame <a href="">HERE</a>.
 
