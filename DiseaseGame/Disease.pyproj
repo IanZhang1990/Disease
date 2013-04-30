@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2653dca8-d471-46fe-bd24-9b99fd77833c}</ProjectGuid>
+    <ProjectHome>
+    </ProjectHome>
+    <StartupFile>UnitTest.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>Disease</Name>
+    <RootNamespace>SteeringBehavior</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Game\Urban.py" />
+    <Compile Include="Game\GameObject.py" />
+    <Compile Include="Game\Virus.py" />
+    <Compile Include="Game\GameWorld.py" />
+    <Compile Include="Game\Man.py" />
+    <Compile Include="Game\__init__.py" />
+    <Compile Include="GUI\__init__.py" />
+    <Compile Include="Math\__init__.py" />
+    <Compile Include="StateMachine\BuildingStates.py" />
+    <Compile Include="StateMachine\CityStates.py" />
+    <Compile Include="StateMachine\ManStates.py" />
+    <Compile Include="StateMachine\RoadStates.py" />
+    <Compile Include="StateMachine\StateMachine.py" />
+    <Compile Include="StateMachine\HospitalStates.py" />
+    <Compile Include="StateMachine\__init__.py" />
+    <Compile Include="Utils\FileOperation.py" />
+    <Compile Include="Utils\__init__.py" />
+    <Compile Include="UnitTest.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GUI\" />
+    <Folder Include="Messaging\" />
+    <Folder Include="StateMachine\" />
+    <Folder Include="Utils" />
+    <Folder Include="Math" />
+    <Folder Include="Game\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>

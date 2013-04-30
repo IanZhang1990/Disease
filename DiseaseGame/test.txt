@@ -1,0 +1,3 @@
+# test comment
+maxSpeed = 100
+minSpeed = 10

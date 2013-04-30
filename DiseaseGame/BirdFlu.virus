@@ -1,0 +1,8 @@
+# test comment
+Name = H7N9
+InfectRate = 0.90
+Incubation = 20
+MortalityRate = 0.90
+MortalityTime = 10
+SelfCureRate = 0.1
+MedicalCureRate = 0.99
