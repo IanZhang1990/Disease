@@ -30,7 +30,9 @@
     <Compile Include="Game\Man.py" />
     <Compile Include="Game\__init__.py" />
     <Compile Include="GUI\__init__.py" />
+    <Compile Include="Math\Vector.py" />
     <Compile Include="Math\__init__.py" />
+    <Compile Include="Messaging\__init__.py" />
     <Compile Include="StateMachine\BuildingStates.py" />
     <Compile Include="StateMachine\CityStates.py" />
     <Compile Include="StateMachine\ManStates.py" />
@@ -39,6 +41,8 @@
     <Compile Include="StateMachine\HospitalStates.py" />
     <Compile Include="StateMachine\__init__.py" />
     <Compile Include="Utils\FileOperation.py" />
+    <Compile Include="Utils\Path.py" />
+    <Compile Include="Utils\SteeringBehavior.py" />
     <Compile Include="Utils\__init__.py" />
     <Compile Include="UnitTest.py" />
   </ItemGroup>

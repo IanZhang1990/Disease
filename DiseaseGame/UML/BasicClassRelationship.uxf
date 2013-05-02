@@ -4,7 +4,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>320</x>
+      <x>310</x>
       <y>60</y>
       <w>220</w>
       <h>80</h>
@@ -19,7 +19,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>320</x>
+      <x>310</x>
       <y>220</y>
       <w>210</w>
       <h>370</h>
@@ -28,6 +28,7 @@
 --
 -Steering:	SteeringBehaviors
 -City: 		City
+-World:		GameWorld
 -Disease:	Virus
 -Sickness:	Float
 -Name:		String
@@ -52,7 +53,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>390</x>
+      <x>380</x>
       <y>110</y>
       <w>50</w>
       <h>130</h>
@@ -63,10 +64,10 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>670</x>
+      <x>660</x>
       <y>190</y>
       <w>210</w>
-      <h>200</h>
+      <h>260</h>
     </coordinates>
     <panel_attributes>/SteeringBehaviors/
 --
@@ -81,14 +82,16 @@
 +QuarantineOff():void
 +PursuitOn():void
 +PursuitOff():void
-
++SetTarget( pos ):void
++SetTargetAgent( man ):void
++SetPath():void
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>190</x>
+      <x>180</x>
       <y>680</y>
       <w>190</w>
       <h>100</h>
@@ -106,7 +109,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>480</x>
+      <x>470</x>
       <y>680</y>
       <w>200</w>
       <h>140</h>
@@ -125,7 +128,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>250</x>
+      <x>240</x>
       <y>560</y>
       <w>170</w>
       <h>140</h>
@@ -136,7 +139,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>400</x>
+      <x>390</x>
       <y>560</y>
       <w>200</w>
       <h>140</h>
@@ -147,7 +150,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>670</x>
+      <x>660</x>
       <y>520</y>
       <w>210</w>
       <h>150</h>
@@ -166,7 +169,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>500</x>
+      <x>490</x>
       <y>530</y>
       <w>190</w>
       <h>50</h>
@@ -177,7 +180,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>500</x>
+      <x>490</x>
       <y>250</y>
       <w>190</w>
       <h>50</h>
@@ -188,7 +191,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>140</x>
+      <x>130</x>
       <y>910</y>
       <w>100</w>
       <h>30</h>
@@ -199,7 +202,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>310</x>
+      <x>300</x>
       <y>860</y>
       <w>260</w>
       <h>220</h>
@@ -223,7 +226,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>190</x>
+      <x>180</x>
       <y>750</y>
       <w>50</w>
       <h>180</h>
@@ -234,7 +237,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>210</x>
+      <x>200</x>
       <y>890</y>
       <w>120</w>
       <h>50</h>
@@ -245,7 +248,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>150</x>
+      <x>140</x>
       <y>790</y>
       <w>500</w>
       <h>350</h>
@@ -256,7 +259,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>310</x>
+      <x>300</x>
       <y>750</y>
       <w>50</w>
       <h>130</h>
@@ -267,7 +270,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>490</x>
+      <x>480</x>
       <y>790</y>
       <w>50</w>
       <h>90</h>
@@ -278,7 +281,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>100</x>
+      <x>90</x>
       <y>470</y>
       <w>140</w>
       <h>30</h>
@@ -289,7 +292,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>170</x>
+      <x>160</x>
       <y>470</y>
       <w>50</w>
       <h>230</h>
@@ -300,7 +303,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>90</x>
+      <x>80</x>
       <y>470</y>
       <w>240</w>
       <h>600</h>
@@ -311,12 +314,34 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>140</x>
+      <x>130</x>
       <y>0</y>
       <w>660</w>
       <h>490</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>30;470;30;30;640;30;640;190</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>760</x>
+      <y>940</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>GameWorld</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>530</x>
+      <y>930</y>
+      <w>250</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>230;30;30;30</additional_attributes>
   </element>
 </diagram>
