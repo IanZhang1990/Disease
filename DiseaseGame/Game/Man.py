@@ -7,6 +7,11 @@
 import Game.Virus
 import time
 from Utils.SteeringBehavior import SteeringBehavior
+from Math.Vector import Vector2D
+from Math.Math2D import Math2D
+import pygame
+from GUI.DisplayScreen import DisplayScreen
+from GUI.Colors import Colors
 
 #===========================================================
 #           ManParamLoader Class
@@ -16,7 +21,8 @@ class ManParamLoader(ParameterLoader):
         This parameter loader is designed for loading virus parameters only.
 
         A .man file contains parameters:
-        Mass,
+        Mass
+        Size
         MaxForce
         MaxSpeed
         Scale
@@ -36,7 +42,7 @@ class ManParamLoader(ParameterLoader):
 class Man(object):
     """Man class defines properties and methods of a man"""
 
-    def __init__(self, world, manParmLoader, position, velocity):
+    def __init__(self, world, manParmLoader, steeringParmLoader, sex, age, position, velocity):
         self.Sex = str("Male")                            # By default, the man is a male.
         self.Disease = Null                                 # Virus
         self.Age = 20                                         # Age
@@ -45,13 +51,28 @@ class Man(object):
         self.World = world                                # The game world the man is in
         self.Steering = Null                               # SteeringBehavior
         self.LeftIncubationDay = 0                    # Not infected man have no incubation day
-        self.DateGetInfected = Null;                        # The date the man got sick
+        self.DateGetInfected = Null;                  # The date the man got sick
         self.SickTime = 0                                   # Duration of being sick
         self.MetList = []                                    # The list of man he met after getting infected.
         self.Quarantine = False                          # Not infected, not quarantined.
         self.ManStateMachine = Null                 # A man's statemachine
+        self.DrawingColor = Colors.Green           # A normal man looks green.
 
-        # Create Steering Behavior, the SteeringParameterLoader should be gotten in singleton pattern. 
+        # Create Steering Behavior
+        self.Steering = SteeringBehavior( self, steeringParmLoader)
+        self.Sex = sex
+        self.Age = age
+        self.Pos = position
+        self.Velocity = velocity
+
+        # Get Parameters from Parameter Loader
+        self.MaxSpeed = manParmLoader.Parameters.get('MaxSpeed', 20);
+        self.MaxForce = manParmLoader.Parameters.get('MaxForce');
+        self.Mass = manParmLoader.Parameters.get('Mass');
+        self.Size = manParmLoader.Parameters.get('Size');
+        self.Scale = manParmLoader.Parameters.get('Scale');
+        self.ViewDistance = manParmLoader.Parameters.get('ViewDistance');
+
         print "Man::__init__ not fully implemented yet"
         raise Exception()
 
@@ -77,3 +98,35 @@ class Man(object):
         """True, if the man is infected by a virus"""
         return (self.Disease != Null)
         
+
+
+
+    ##########################################################
+    def Render( self ):
+        """Render the man into the screen"""
+        pygame.draw.circle( DisplayScreen.DisplaySurface, self.DrawingColor, self.Pos, self.Size )        
+
+    def Update(self, elapsedTime):
+        """Update the man's state"""
+        self.ElaplsedTime = elapsedTime;      # Update the elapsedTime
+        oldPos = self.Pos                              # Keep a record of 
+
+        steeringForce = Vector2D( 0, 0)
+        steeringForce = self.Steering.Calculate();
+
+        acceleration = steeringForce / self.Mass
+        self.Velocity += acceleration * elapsedTime
+        self.Velocity.Truncate( self.MaxSpeed )          # make sure the velocity does not exceed maximum speed
+        self.Pos = self.Pos + self.Velocity * elapsedTime # Update position information
+
+        # Update the heading if the vehicle has a non zero velocity
+        if self.Velocity.get_length_sqrd() > 0.00000001:
+            self.Heading = self.Velocity.normalized()
+            self.Side = self.Heading.perpendicular()
+
+        # Treat the screen as a toroid
+        Math2D.WrapAround( self.Pos, self.World.WorldWidth, self.World.WorldHeight )
+
+        # Update the vehicle's current cell if space partitioning is turned on
+        if self.Steering.IsPacePartitionOn():
+            print 'Not Implemented Yet'

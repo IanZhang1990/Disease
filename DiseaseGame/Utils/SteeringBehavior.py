@@ -48,6 +48,8 @@ class SummingMethod:
 class SteeringBehavior(object):
     """Steering Behavior"""
 
+    
+
     def __init__( self, owener, parmLoader ):
         self.Owener = owener
         self.Path = Null
@@ -93,12 +95,17 @@ class SteeringBehavior(object):
             # Tag neighbors
             if On( BehaviorType.SEPARATION ) or On( BehaviorType.ALLIGNMENT ) or On(BehaviorType.COHESION):
                 # Tag Neighbors
+                raise Exception();
         else:
             # calculate neighbours in cell-space
             if On( BehaviorType.SEPARATION ) or On( BehaviorType.ALLIGNMENT ) or On(BehaviorType.COHESION):
                 # Tag Neighbors
+                raise Exception();
 
-
+    def Wander( self ):
+        """Man a man wander randomly in the world"""
+        # This behavior is dependent on the update rate, so this line must be included when using time independent framerate.
+        jitterThisTimeSlice = self.WanderJitter * self.Owener.ElaplsedTime
 
 ######################################################################################
     def SetTarget( self, targetPos ):
@@ -114,10 +121,7 @@ class SteeringBehavior(object):
         self.Path.CreateRandomPath( numWayPoints, mx, my, cx, cy )
 
     def ToggleSpacePartition( self ):
-        if self.CellSpaceOn == True:
-            self.CellSpaceOn = False
-        else:
-            self.CellSpaceOn = True 
+            self.CellSpaceOn = not self.CellSpaceOn
 
     def IsPacePartitionOn( self ):
         return self.CellSpaceOn

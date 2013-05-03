@@ -336,4 +336,10 @@ class Vector2D(object):
     def __setstate__(self, dict):
         self.x, self.y = dict
 
+    def Truncate( self, max ):
+        """Truncates a vector so that its length does not exceed max"""
+        if type( max ) == type( float ):
+            if self.get_length() > max:
+                self = self.normalized()
+                self = self * max
 

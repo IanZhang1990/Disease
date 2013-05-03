@@ -6,7 +6,7 @@
     <ProjectGuid>{2653dca8-d471-46fe-bd24-9b99fd77833c}</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>UnitTest.py</StartupFile>
+    <StartupFile>DiseaseGame.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,13 +23,17 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DiseaseGame.py" />
     <Compile Include="Game\Urban.py" />
     <Compile Include="Game\GameObject.py" />
     <Compile Include="Game\Virus.py" />
     <Compile Include="Game\GameWorld.py" />
     <Compile Include="Game\Man.py" />
     <Compile Include="Game\__init__.py" />
+    <Compile Include="GUI\Colors.py" />
+    <Compile Include="GUI\DisplayScreen.py" />
     <Compile Include="GUI\__init__.py" />
+    <Compile Include="Math\Math2D.py" />
     <Compile Include="Math\Vector.py" />
     <Compile Include="Math\__init__.py" />
     <Compile Include="Messaging\__init__.py" />
