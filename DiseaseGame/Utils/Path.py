@@ -37,7 +37,7 @@ class Path(object):
         self.__currWayPointIndex = 0;       # Index of current way point
 
         if numWayPoints != None:
-            self.CreateRandomPath( self, numWayPoints, minX, minY, maxX, maxY )
+            self.CreateRandomPath( numWayPoints, minX, minY, maxX, maxY )
             self.CurrWayPoint = self.WayPoints[0]
             self.__currWayPointIndex = 0;
 

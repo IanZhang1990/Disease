@@ -13,8 +13,8 @@ from Game import Man
 from Utils.SteeringBehavior import SteeringBehavior
 from Utils.SteeringBehavior import SteeringParmLoader
 from Math.Vector import Vector2D
-import math
-from random import random
+import random
+
 
 class GameWorld(object):
     """GameWorld class controls all the basic operations of a game, 
@@ -37,7 +37,7 @@ class GameWorld(object):
     def __init__(self):
 
         border = 30;
-        self.ManPath = Path( 8, border, border, self.WorldWidth-border, self.WorldHeight-border, True)
+        self.ManPath = Path( 8, border, border, GameWorld.WorldWidth-border, GameWorld.WorldHeight-border, True)
 
         # Set up cities
 
@@ -50,13 +50,13 @@ class GameWorld(object):
 
         for i in range(0, agentNumber):
             # determine a random starting position
-            pos = Vector2D( random.uniform(0, self.WorldWidth), random.uniform( 0, self.WorldHeight))
+            pos = Vector2D( random.uniform(0, GameWorld.WorldWidth), random.uniform( 0, GameWorld.WorldHeight))
             newPerson = Man.Man( self, manParmLoader, steeringParmLoader, True, 20,  pos, Vector2D(0, 0))
             self.People.append( newPerson )
 
     def Render(self):
         """Render objects to the screen"""
-        if not self.Pause:
+        if not GameWorld.Pause:
             for person in self.People:
                 person.Render()
             for doctor in self.Doctors:
@@ -70,13 +70,13 @@ class GameWorld(object):
     def Pause(self):
         self.Pause = not self.Pause
 
-
     def Update( self, elapsedTime ):
         """Update all the game objects"""
-        for person in self.People:
-            person.Update( elapsedTime )
-        for doctor in self.Doctors:
-            doctor.Update( elapsedTime )
-        for city in self.Cities:
-            city.Update( elapsedTime )
+        if not GameWorld.Pause:
+            for person in self.People:
+                person.Update( elapsedTime )
+            for doctor in self.Doctors:
+                doctor.Update( elapsedTime )
+            for city in self.Cities:
+                city.Update( elapsedTime )
 

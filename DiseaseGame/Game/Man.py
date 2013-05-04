@@ -37,8 +37,8 @@ class ManParamLoader(ParameterLoader):
             Parameters:
             manFilename:  The name of the file that defines parameters of men. It has to be ended with ".man"
         """
-        if( str(virusFilename).endswith('.man') ):
-            ParameterLoader.__init__(self, virusFilename);
+        if( str(manFilename).endswith('.man') ):
+            ParameterLoader.__init__(self, manFilename);
             ParameterLoader.LoadFile(self);
 
 class Man(object):
@@ -60,6 +60,14 @@ class Man(object):
         self.ManStateMachine = None                 # A man's statemachine
         self.DrawingColor = Colors.Green           # A normal man looks green.
 
+        # Get Parameters from Parameter Loader
+        self.MaxSpeed = float(manParmLoader.Parameters.get('MaxSpeed', 20));
+        self.MaxForce = float(manParmLoader.Parameters.get('MaxForce'));
+        self.Mass = float(manParmLoader.Parameters.get('Mass'));
+        self.Size = float(manParmLoader.Parameters.get('Size'));
+        self.Scale = float(manParmLoader.Parameters.get('Scale'));
+        self.ViewDistance = float(manParmLoader.Parameters.get('ViewDistance'));
+
         # Create Steering Behavior
         self.Steering = SteeringBehavior( self, steeringParmLoader)
         self.Sex = sex
@@ -67,16 +75,6 @@ class Man(object):
         self.Pos = position
         self.Velocity = velocity
 
-        # Get Parameters from Parameter Loader
-        self.MaxSpeed = float(manParmLoader.Parameters.get('MaxSpeed', 20));
-        self.MaxForce = float(manParmLoader.Parameters.get('MaxForce'));
-        self.Mass = float(manParmLoader.Parameters.get('Mass'));
-        self.Size = int(manParmLoader.Parameters.get('Size'));
-        self.Scale = float(manParmLoader.Parameters.get('Scale'));
-        self.ViewDistance = int(manParmLoader.Parameters.get('ViewDistance'));
-
-        print "Man::__init__ not fully implemented yet"
-        raise Exception()
 
     def GetInfect( self, virus ):
         """Get Infect from the infector"""
@@ -115,6 +113,8 @@ class Man(object):
 
         steeringForce = Vector2D( 0, 0)
         steeringForce = self.Steering.Calculate();
+        if steeringForce is None:
+            pass
 
         acceleration = steeringForce / self.Mass
         self.Velocity += acceleration * elapsedTime

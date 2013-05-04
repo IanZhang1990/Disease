@@ -34,16 +34,19 @@ class ParameterLoader:
              Number = 50;
             ...
         """
-        f = file( self.Filename, 'r' );
-        while True:
-            line = f.readline();
-            if len( line ) == 0: # Zero length means EOF
-                break;
-            if( line[0] != '#' ):
-                print line;
-                pair = str( line ).split('=')
-                self.Parameters[pair[0].strip()] = pair[1].strip()
-        f.close();
+        try:
+            f = file( self.Filename, 'r' );
+            while True:
+                line = f.readline();
+                if len( line ) == 0: # Zero length means EOF
+                    break;
+                if( line[0] != '#' ):
+                    #print line;
+                    pair = str( line ).split('=')
+                    self.Parameters[pair[0].strip()] = pair[1].strip()
+            f.close();
+        except StandardError:
+            print "Some Error Occured during parsing file "+ self.Filename
             
 
 

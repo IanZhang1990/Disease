@@ -61,8 +61,8 @@ class SteeringBehavior(object):
         self.TargetAgent2 = None
         self.Target = None             # The current target
 
-        self.DBoxLength = parmLoader.Parameters.get('MinDetectionBoxLength')        # length of the 'detection box' utilized in obstacle avoidance
-        self.ViewDistance = parmLoader.Parameters.get('ViewDistance');                    # how far the agent can 'see'
+        self.DBoxLength = float(parmLoader.Parameters.get('MinDetectionBoxLength'))        # length of the 'detection box' utilized in obstacle avoidance
+        self.ViewDistance = self.Owener.ViewDistance                                                # how far the agent can 'see'
         self.WanderDistance = 2.0
         self.WanderJitter = 80.0
         self.WanderRadius = 1.2
@@ -93,12 +93,12 @@ class SteeringBehavior(object):
         #if switched on. If not, use the standard tagging system
         if self.CellSpaceOn == False:
             # Tag neighbors
-            if On( BehaviorType.SEPARATION ) or On( BehaviorType.ALLIGNMENT ) or On(BehaviorType.COHESION):
+            if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
                 raise Exception();
         else:
             # calculate neighbours in cell-space
-            if On( BehaviorType.SEPARATION ) or On( BehaviorType.ALLIGNMENT ) or On(BehaviorType.COHESION):
+            if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
                 raise Exception();
 
