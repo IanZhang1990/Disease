@@ -66,7 +66,7 @@ class Vector2D(object):
     # Generic operator handlers
     def _o2(self, other, f):
         "Any two-operator operation where the left operand is a Vec2d"
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             return Vector2D(f(self.x, other.x),
                          f(self.y, other.y))
         elif (hasattr(other, "__getitem__")):
@@ -97,7 +97,7 @@ class Vector2D(object):
  
     # Addition
     def __add__(self, other):
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             return Vector2D(self.x + other.x, self.y + other.y)
         elif hasattr(other, "__getitem__"):
             return Vector2D(self.x + other[0], self.y + other[1])
@@ -106,7 +106,7 @@ class Vector2D(object):
     __radd__ = __add__
  
     def __iadd__(self, other):
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             self.x += other.x
             self.y += other.y
         elif hasattr(other, "__getitem__"):
@@ -119,21 +119,21 @@ class Vector2D(object):
  
     # Subtraction
     def __sub__(self, other):
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             return Vector2D(self.x - other.x, self.y - other.y)
         elif (hasattr(other, "__getitem__")):
             return Vector2D(self.x - other[0], self.y - other[1])
         else:
             return Vector2D(self.x - other, self.y - other)
     def __rsub__(self, other):
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             return Vector2D(other.x - self.x, other.y - self.y)
         if (hasattr(other, "__getitem__")):
             return Vector2D(other[0] - self.x, other[1] - self.y)
         else:
             return Vector2D(other - self.x, other - self.y)
     def __isub__(self, other):
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             self.x -= other.x
             self.y -= other.y
         elif (hasattr(other, "__getitem__")):
@@ -146,7 +146,7 @@ class Vector2D(object):
  
     # Multiplication
     def __mul__(self, other):
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             return Vector2D(self.x*other.x, self.y*other.y)
         if (hasattr(other, "__getitem__")):
             return Vector2D(self.x*other[0], self.y*other[1])
@@ -155,7 +155,7 @@ class Vector2D(object):
     __rmul__ = __mul__
  
     def __imul__(self, other):
-        if isinstance(other, Vec2d):
+        if isinstance(other, Vector2D):
             self.x *= other.x
             self.y *= other.y
         elif (hasattr(other, "__getitem__")):

@@ -64,9 +64,6 @@ class GameWorld(object):
                 doctor.Render()
             for city in self.Cities:
                 city.Render()
-
-            # Render everything
-            raise Exception();
     
     def TogglePause(self):
         self.Pause = not self.Pause

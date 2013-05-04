@@ -1,7 +1,11 @@
 class Math2D(object):
     """Math for a 2D area"""
 
-    def WrapAround( posVec2d, maxX, maxY ):
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def WrapAround( posVect2d, maxX, maxY ):
         """reats a window as a toroid"""
         if posVect2d.x > maxX: 
             posVect2d.x = 0.0

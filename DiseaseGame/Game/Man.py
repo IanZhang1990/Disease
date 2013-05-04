@@ -104,7 +104,9 @@ class Man(object):
     ##########################################################
     def Render( self ):
         """Render the man into the screen"""
-        pygame.draw.circle( DisplayScreen.DisplaySurface, self.DrawingColor, self.Pos, self.Size )        
+        posX = int( self.Pos.x )
+        posY = int(self.Pos.y)
+        pygame.draw.circle( DisplayScreen.DisplaySurface, self.DrawingColor, ( posX, posY ), int(self.Size) )        
 
     def Update(self, elapsedTime):
         """Update the man's state"""
@@ -127,7 +129,7 @@ class Man(object):
             self.Side = self.Heading.perpendicular()
 
         # Treat the screen as a toroid
-        Math2D.WrapAround( self.Pos, GameWorld.WorldWidth, GameWorld.WorldHeight )
+        Math2D.WrapAround( self.Pos, self.World.WorldWidth, self.World.WorldHeight )
 
         # Update the vehicle's current cell if space partitioning is turned on
         if self.Steering.IsPacePartitionOn():

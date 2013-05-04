@@ -1,6 +1,7 @@
+
 AgentNumber       = 50
 Mass              = 1.0
-Size		  = 5
+Size		  = 6
 MaxForce	  = 200.0
 MaxSpeed          = 150.0
 Scale             = 1.0
