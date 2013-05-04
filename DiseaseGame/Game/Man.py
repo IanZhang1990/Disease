@@ -114,7 +114,7 @@ class Man(object):
         steeringForce = Vector2D( 0, 0)
         steeringForce = self.Steering.Calculate();
         if steeringForce is None:
-            pass
+            steeringForce = Vector2D( 0, 0 )
 
         acceleration = steeringForce / self.Mass
         self.Velocity += acceleration * elapsedTime
@@ -127,7 +127,7 @@ class Man(object):
             self.Side = self.Heading.perpendicular()
 
         # Treat the screen as a toroid
-        Math2D.WrapAround( self.Pos, self.World.WorldWidth, self.World.WorldHeight )
+        Math2D.WrapAround( self.Pos, GameWorld.WorldWidth, GameWorld.WorldHeight )
 
         # Update the vehicle's current cell if space partitioning is turned on
         if self.Steering.IsPacePartitionOn():

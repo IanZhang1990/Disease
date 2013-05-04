@@ -23,7 +23,6 @@ class GameWorld(object):
 
     WorldWidth = DisplayScreen.Resolution[0]
     WorldHeight = DisplayScreen.Resolution[1]
-    Pause = False
 
     #############################
     ### Game Objects
@@ -35,6 +34,8 @@ class GameWorld(object):
     ManPath = None                     # any path we may create for the men to follow
 
     def __init__(self):
+        self.Pause = False
+
 
         border = 30;
         self.ManPath = Path( 8, border, border, GameWorld.WorldWidth-border, GameWorld.WorldHeight-border, True)
@@ -56,7 +57,7 @@ class GameWorld(object):
 
     def Render(self):
         """Render objects to the screen"""
-        if not GameWorld.Pause:
+        if not self.Pause:
             for person in self.People:
                 person.Render()
             for doctor in self.Doctors:
@@ -67,12 +68,12 @@ class GameWorld(object):
             # Render everything
             raise Exception();
     
-    def Pause(self):
+    def TogglePause(self):
         self.Pause = not self.Pause
 
     def Update( self, elapsedTime ):
         """Update all the game objects"""
-        if not GameWorld.Pause:
+        if not self.Pause:
             for person in self.People:
                 person.Update( elapsedTime )
             for doctor in self.Doctors:
