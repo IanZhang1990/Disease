@@ -35,9 +35,9 @@ class StateMachine:
     def __init__( self, gameObj ):
         """Constructor for StateMachine Class"""
         self.Owener = gameObj                                         # A pointer to the agent that owns this instance
-        self.CurrentState = Null;                                      # A record of the current state the agent is in
-        self.PreviousState = Null;                                      # A record of the last state the agent was in
-        self.GlobalState = Null;                                        # this is called every time the FSM is updated
+        self.CurrentState = None;                                      # A record of the current state the agent is in
+        self.PreviousState = None;                                      # A record of the last state the agent was in
+        self.GlobalState = None;                                        # this is called every time the FSM is updated
    
     def SetCurrentState( self, state ):
         """To set the current state of the agent"""
@@ -58,11 +58,11 @@ class StateMachine:
     def Update(self):
         """Update the FSM"""
         # if a global state exist, execute
-        if( self.GlobalState != Null ):
+        if( self.GlobalState != None ):
             self.Globalstate.Execute( self.Owener )
 
         # same for the current state
-        if( self.CurrentState != Null ):
+        if( self.CurrentState != None ):
             self.CurrentState.Execute( self.Owener )
 
     def HandleMessage( self, message ):
@@ -71,7 +71,7 @@ class StateMachine:
 
     def ChangeState( self, newState ):
         """change to a new state"""
-        if newState != Null:
+        if newState != None:
             # Keep a record of the previous state
             self.PreviousState = self.CurrentState;
 

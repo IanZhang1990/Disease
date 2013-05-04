@@ -33,7 +33,7 @@ class Path(object):
             & MaxX/Y define the bounding box of the path."""
         self.Looped = looped                       # flag to indicate if the path should be looped
         self.WayPoints = list()                    # (The last waypoint connected to the first)
-        self.CurrWayPoint = Null                # points to the current waypoint
+        self.CurrWayPoint = None                # points to the current waypoint
         self.__currWayPointIndex = 0;       # Index of current way point
 
         if numWayPoints != None:
@@ -84,7 +84,7 @@ class Path(object):
 
     def Clear(self):
         self.WayPoints = list()
-        self.CurrWayPoint = Null
+        self.CurrWayPoint = None
         self.__currWayPointIndex = 0
 
     def Render(self, DisplaySurface):

@@ -12,6 +12,7 @@ from Math.Math2D import Math2D
 import pygame
 from GUI.DisplayScreen import DisplayScreen
 from GUI.Colors import Colors
+from Utils.FileOperation import ParameterLoader
 
 #===========================================================
 #           ManParamLoader Class
@@ -21,6 +22,7 @@ class ManParamLoader(ParameterLoader):
         This parameter loader is designed for loading virus parameters only.
 
         A .man file contains parameters:
+        AgentNumber
         Mass
         Size
         MaxForce
@@ -44,18 +46,18 @@ class Man(object):
 
     def __init__(self, world, manParmLoader, steeringParmLoader, sex, age, position, velocity):
         self.Sex = str("Male")                            # By default, the man is a male.
-        self.Disease = Null                                 # Virus
+        self.Disease = None                                 # Virus
         self.Age = 20                                         # Age
         self.Sickness = 0.0                                 # Not yet sick
-        self.City = Null                                      # In Null City
+        self.City = None                                      # In None City
         self.World = world                                # The game world the man is in
-        self.Steering = Null                               # SteeringBehavior
+        self.Steering = None                               # SteeringBehavior
         self.LeftIncubationDay = 0                    # Not infected man have no incubation day
-        self.DateGetInfected = Null;                  # The date the man got sick
+        self.DateGetInfected = None;                  # The date the man got sick
         self.SickTime = 0                                   # Duration of being sick
         self.MetList = []                                    # The list of man he met after getting infected.
         self.Quarantine = False                          # Not infected, not quarantined.
-        self.ManStateMachine = Null                 # A man's statemachine
+        self.ManStateMachine = None                 # A man's statemachine
         self.DrawingColor = Colors.Green           # A normal man looks green.
 
         # Create Steering Behavior
@@ -66,12 +68,12 @@ class Man(object):
         self.Velocity = velocity
 
         # Get Parameters from Parameter Loader
-        self.MaxSpeed = manParmLoader.Parameters.get('MaxSpeed', 20);
-        self.MaxForce = manParmLoader.Parameters.get('MaxForce');
-        self.Mass = manParmLoader.Parameters.get('Mass');
-        self.Size = manParmLoader.Parameters.get('Size');
-        self.Scale = manParmLoader.Parameters.get('Scale');
-        self.ViewDistance = manParmLoader.Parameters.get('ViewDistance');
+        self.MaxSpeed = float(manParmLoader.Parameters.get('MaxSpeed', 20));
+        self.MaxForce = float(manParmLoader.Parameters.get('MaxForce'));
+        self.Mass = float(manParmLoader.Parameters.get('Mass'));
+        self.Size = int(manParmLoader.Parameters.get('Size'));
+        self.Scale = float(manParmLoader.Parameters.get('Scale'));
+        self.ViewDistance = int(manParmLoader.Parameters.get('ViewDistance'));
 
         print "Man::__init__ not fully implemented yet"
         raise Exception()
@@ -96,7 +98,7 @@ class Man(object):
     
     def IsInfected(self):
         """True, if the man is infected by a virus"""
-        return (self.Disease != Null)
+        return (self.Disease != None)
         
 
 

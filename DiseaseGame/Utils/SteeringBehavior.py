@@ -52,21 +52,21 @@ class SteeringBehavior(object):
 
     def __init__( self, owener, parmLoader ):
         self.Owener = owener
-        self.Path = Null
+        self.Path = None
         self.SteeringForce = Vector2D(0, 0)
 
         self.iFlags = 0             # binary flags to indicate whether or not a behavior should be active
         # These can be used to keep track of friends, pursuers, or prey
-        self.TargetAgent1 = Null
-        self.TargetAgent2 = Null
-        self.Target = Null             # The current target
+        self.TargetAgent1 = None
+        self.TargetAgent2 = None
+        self.Target = None             # The current target
 
         self.DBoxLength = parmLoader.Parameters.get('MinDetectionBoxLength')        # length of the 'detection box' utilized in obstacle avoidance
         self.ViewDistance = parmLoader.Parameters.get('ViewDistance');                    # how far the agent can 'see'
         self.WanderDistance = 2.0
         self.WanderJitter = 80.0
         self.WanderRadius = 1.2
-        self.WanderTarget = Null                                                                              # the current position on the wander circle the agent is attempting to steer towards
+        self.WanderTarget = None                                                                              # the current position on the wander circle the agent is attempting to steer towards
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
         self.CellSpaceOn = True
         self.SummingMethod = SummingMethod.DITHERED;
