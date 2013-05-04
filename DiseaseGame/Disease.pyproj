@@ -24,6 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DiseaseGame.py" />
+    <Compile Include="Game\CellSpace.py" />
     <Compile Include="Game\Urban.py" />
     <Compile Include="Game\GameObject.py" />
     <Compile Include="Game\Virus.py" />
@@ -33,6 +34,7 @@
     <Compile Include="GUI\Colors.py" />
     <Compile Include="GUI\DisplayScreen.py" />
     <Compile Include="GUI\__init__.py" />
+    <Compile Include="Math\InvertedAABBox2D.py" />
     <Compile Include="Math\Math2D.py" />
     <Compile Include="Math\Vector.py" />
     <Compile Include="Math\__init__.py" />

@@ -1,6 +1,6 @@
 #=====================================================================================
 # Filename: Vector.py
-# Author: Ian Zhang
+# Reference: http://www.pygame.org/wiki/2DVectorClass
 # Description: This is a 2D vector class, has operator overloading (can use with tuples or lists), 
 #               uses slots for perforance, is picklable, implements list interface (so it's compatible 
 #               with pygame functions), has a fair bit of high level vector operators (for performance 
