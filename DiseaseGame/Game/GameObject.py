@@ -25,4 +25,3 @@ class GameObject(object):
         Update the state of the game object
         """
         pass
-
