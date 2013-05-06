@@ -22,6 +22,10 @@ class Cell(object):
             self.AABBox = InvertedAABBox2D( topLeft, bottomRight )
         pass
 
+    def Empty(self):
+        """empty its member list"""
+        self.Memebrs = list()
+
     def Render( self ):
         """Render the cell in the screen"""
         self.AABBox.Render()
@@ -93,6 +97,25 @@ class CellSpacePartition:
         Parameters:
             @targetPos: Vector2D
             @queryradius: float"""
+        curNbor = self.Neighbors[0]
+        curNborIdx = 0
+        # create the query box that is the bounding box of the target's query area
+        QueryBox = InvertedAABBox2D( targetPos - Vector2D( queryRadius, queryRadius ), 
+                                                          targetPos + Vector2D(queryRadius, queryRadius) )
+        # Iterate through each cell and test to see if its bounding box overlaops with the query box.
+        # if it does and it also contains entities then make further proximity tests
+        for curCell in self.Cells:
+            # test to see if its bounding box overlaops with the query box
+            if curCell.AABBox.IsOverlapWith( QueryBox ) and curCell.Members.count > 0:
+                # add any entities found within query radius to the neighbor list
+                for entity in curCell.Members:
+                    if entity.Pos.get_dist_sqrd( targetPos ) < queryRadius * queryRadius:
+                        self.Neighbors.remove( curNbor )
+                        self.Neighbors.insert( curNborIdx, entity )
+                        curNborIdx = curNborIdx + 1
+                        curNbor = curNbor = self.Neighbors[curNborIdx]            
+
+        curNbor = None
         pass
 
     def PartitionToIndex( self, position ):
@@ -104,22 +127,30 @@ class CellSpacePartition:
             idx = int(self.Cells.count - 1)
         return idx
 
-    def Begin( self ):
+    def FirstNeighbor( self ):
         """Returns a reference ot the first entity of the neighbor list"""
-        pass
+        self.CurrNborIndx = 0
+        self.CurrentNeighbor = self.Neighbors[self.CurrNborIndx]
+        return self.CurrentNeighbor
 
-    def Next( self ):
+    def NextNeighbor( self ):
         """Returns the next entity of the current entity in the neighbor list"""
-        pass
+        self.CurrNborIndx = self.CurrNborIndx + 1
+        self.CurrentNeighbor = self.Neighbors[self.CurrNborIndx]
+        return self.CurrentNeighbor
 
-    def End(self):
+    def EndNeighbor(self):
         """Returns true if the current entity is in the end of the neighbor list"""
-        pass
+        return self.CurrentNeighbor == self.Neighbors[-1] or self.CurrentNeighbor == None or self.Neighbors.count == 0 or self.Neighbors == None
 
     def EmptyCells( self ):
         """Empty the cells of entities"""
+        for cell in self.Cells:
+            cell.Empty()
         pass
 
     def Render( self ):
         """Render every cell in the screen"""
-
+        for cell in self.Cells:
+            cell.Render()
+        pass
