@@ -36,6 +36,7 @@
     <Compile Include="GUI\__init__.py" />
     <Compile Include="Math\InvertedAABBox2D.py" />
     <Compile Include="Math\Math2D.py" />
+    <Compile Include="Math\Matrix.py" />
     <Compile Include="Math\Vector.py" />
     <Compile Include="Math\__init__.py" />
     <Compile Include="Messaging\__init__.py" />
