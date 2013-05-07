@@ -196,7 +196,7 @@ class SteeringBehavior(object):
         # move the target into a position WanderDist in front of the agent
         target = self.WanderTarget + Vector2D( self.WanderDistance, 0 )
 
-        targetInWorld = 
+        raise StandardError
 
 ######################################################################################
     def SetTarget( self, targetPos ):
