@@ -61,7 +61,7 @@ class SteeringBehavior(object):
         self.TargetAgent2 = None
         self.Target = None             # The current target
 
-        self.DBoxLength = float(parmLoader.Parameters.get('MinDetectionBoxLength'))        # length of the 'detection box' utilized in obstacle avoidance
+        self.DBoxLength = float(parmLoader.Parameters.get('MinDetectionBoxLength', 40.0))        # length of the 'detection box' utilized in obstacle avoidance
         self.ViewDistance = self.Owener.ViewDistance                                                # how far the agent can 'see'
         self.WanderDistance = 2.0
         self.WanderJitter = 80.0
@@ -69,8 +69,9 @@ class SteeringBehavior(object):
         self.WanderTarget = None                                                                              # the current position on the wander circle the agent is attempting to steer towards
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
         self.CellSpaceOn = True
-        self.SummingMethod = SummingMethod.DITHERED;
+        self.SummingMethod = SummingMethod.WEIGHTED_AVG;
 
+        self.WanderWeight = float(parmLoader.Parameters.get('WanderWeight', 1.0))
 
         # stuff for the wander behavior
         theta = random.uniform(0.0, 1.0) * math.pi * 2.0
@@ -81,6 +82,9 @@ class SteeringBehavior(object):
         # Create a path
         self.Path = Path()
         self.Path.LoopOn()
+
+        # TODO: REMOVE the next line. it is simple for testing.
+        self.WanderOn()
 
 ######################################################################################
     def Calculate( self ):
@@ -95,17 +99,104 @@ class SteeringBehavior(object):
             # Tag neighbors
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
-                raise Exception();
+                self.Owener.World.TagEntitiesWithinViewRange( self.Owener, self.ViewDistance )
         else:
             # calculate neighbours in cell-space
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
-                raise Exception();
+                self.Owener.World.CellSpace.CalculateNeighbors( self.Owener.Pos, self.ViewDistance )
+
+        if self.SummingMethod == SummingMethod.WEIGHTED_AVG:
+            self.SteeringForce = self.CalculateWeightedSum()
+        else:
+            if self.SummingMethod == SummingMethod.PRIORITIZED:
+                self.SteeringForce = self.CalculatePrioritized()
+            else:
+                if self.SummingMethod == SummingMethod.DITHERED:
+                    self.SteeringForce = self.CalculateDithered()
+        return self.SteeringForce
+
+    def CalculatePrioritized( self ):
+        raise StandardError;
+
+    def CalculateDithered( self ):
+        raise StandardError;
+
+    def CalculateWeightedSum( self ):
+        """this simply sums up all the active behaviors X their weights and truncates the result to the max available steering force before returning"""
+        if self.On( BehaviorType.WALL_AVOID ):
+            self.SteeringForce += self.WallAvoidance()
+        if self.On( BehaviorType.OBSTACLE_AVOID ):
+            self.SteeringForce += self.ObstacleAvoidance()
+        if self.On( BehaviorType.EVADE ):
+            if self.TargetAgent1 is not None:
+                self.SteeringForce += self.Evade()     ##################################### NOT FINISHED IN THIS LINE
+        if self.On( BehaviorType.FLEE ):
+            # TODO: Flee
+                pass
+
+        # The next three can be combined for flocking behavior
+        if not self.CellSpaceOn:
+            if self.On( BehaviorType.SEPARATION ):
+                # TODO: Sepration
+                pass
+            if self.On( BehaviorType.ALLIGNMENT ):
+                # TODO: Allignment
+                pass
+            if self.On( BehaviorType.COHESION ):
+                # TODO: Cohesion
+                pass
+        else:
+            if self.On( BehaviorType.SEPARATION ):
+                # TODO: Sepration
+                pass
+            if self.On( BehaviorType.ALLIGNMENT ):
+                # TODO: Allignment
+                pass
+            if self.On( BehaviorType.COHESION ):
+                # TODO: Cohesion
+                pass
+            pass
+
+        if self.On( BehaviorType.WANDER ):
+            self.SteeringForce += self.Wander() * self.WanderWeight
+            pass
+
+        # TODO: A lot of things you should do here.
+        self.SteeringForce.Truncate( self.Owener.MaxForce )
+
+        return self.SteeringForce
+
+
+    def WallAvoidance( self ):
+        # TODO: FInish the code
+        pass
+    def ObstacleAvoidance(self):
+        # TODO: FInish the code
+        pass
+    def Evade( self ):
+        # TODO: FInish the code
+        pass
+
 
     def Wander( self ):
         """Man a man wander randomly in the world"""
         # This behavior is dependent on the update rate, so this line must be included when using time independent framerate.
         jitterThisTimeSlice = self.WanderJitter * self.Owener.ElaplsedTime
+
+        # first, add a small random vector to the target's position
+        self.WanderTarget += Vector2D( random.uniform( -jitterThisTimeSlice, jitterThisTimeSlice ), random.uniform( -jitterThisTimeSlice, jitterThisTimeSlice ) )
+
+        # reproject this new vector back on to a unit circle
+        self.WanderTarget = self.WanderTarget.normalized()
+
+        # increase the length of the vector to the same as the radius of the wander circle
+        self.WanderTarget = self.WanderTarget * self.WanderRadius
+
+        # move the target into a position WanderDist in front of the agent
+        target = self.WanderTarget + Vector2D( self.WanderDistance, 0 )
+
+        targetInWorld = 
 
 ######################################################################################
     def SetTarget( self, targetPos ):

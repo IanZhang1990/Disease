@@ -1,1 +1,2 @@
 MinDetectionBoxLength = 40.0
+WanderWeight = 1.0

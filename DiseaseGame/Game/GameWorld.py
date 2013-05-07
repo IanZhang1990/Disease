@@ -14,6 +14,8 @@ from Utils.SteeringBehavior import SteeringBehavior
 from Utils.SteeringBehavior import SteeringParmLoader
 from Math.Vector import Vector2D
 import random
+from Game.CellSpace import SpacePartition
+from Game.GameObject import GameObject
 
 
 class GameWorld(object):
@@ -25,20 +27,23 @@ class GameWorld(object):
     WorldHeight = DisplayScreen.Resolution[1]
 
     #############################
-    ### Game Objects
+    ### Game Objects ( GLOBAL )
     #####################################################
     People = list()                       # a container of all avg people
     Doctors = list()                     # a container of all doctors
     Cities = list()                        # a container of all cities
+    CellSpace = None                 # Cell SpacePartition.
 
     ManPath = None                     # any path we may create for the men to follow
 
     def __init__(self):
         self.Pause = False
 
-
         border = 30;
         self.ManPath = Path( 8, border, border, GameWorld.WorldWidth-border, GameWorld.WorldHeight-border, True)
+        
+        # Set up space partitions
+        self.CellSpace = SpacePartition( self.WorldWidth, self.WorldHeight, 4, 3, 500 ) # 4 x 3 space partition, with at most 500 agents in it
 
         # Set up cities
 
@@ -67,6 +72,7 @@ class GameWorld(object):
     
     def TogglePause(self):
         self.Pause = not self.Pause
+        pass
 
     def Update( self, elapsedTime ):
         """Update all the game objects"""
@@ -77,4 +83,11 @@ class GameWorld(object):
                 doctor.Update( elapsedTime )
             for city in self.Cities:
                 city.Update( elapsedTime )
+        pass
+
+    def TagEntitiesWithinViewRange( self, entity, range ):
+        GameObject.TagNeighbors( entity, self.People, range )
+        pass
+
+
 

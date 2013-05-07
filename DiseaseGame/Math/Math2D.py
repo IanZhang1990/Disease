@@ -1,3 +1,5 @@
+from copy import copy
+import math
 class Math2D(object):
     """Math for a 2D area"""
 
@@ -15,5 +17,17 @@ class Math2D(object):
             posVect2d.y = 0.0
         if posVect2d.y < 0:
             posVect2d.y = float(maxY)
+
+class Transformations:
+    def PointToWorldSpace( point, agentHeading, agentSide, agentPosition ):
+        """Transforms a point from the agent's local space into world space
+        Parameters:
+        @point: Vector2D
+        @agentHeading: Vector2D
+        @agentSide: Vector2D
+        @agentPosition: Vector2D
+        """
+        transPoint = copy( point )
+        matTrans = 
 
 

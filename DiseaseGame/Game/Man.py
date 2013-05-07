@@ -13,6 +13,7 @@ import pygame
 from GUI.DisplayScreen import DisplayScreen
 from GUI.Colors import Colors
 from Utils.FileOperation import ParameterLoader
+from Game.GameObject import GameObject
 
 #===========================================================
 #           ManParamLoader Class
@@ -27,7 +28,6 @@ class ManParamLoader(ParameterLoader):
         Size
         MaxForce
         MaxSpeed
-        Scale
         ViewDistance
     """
 
@@ -41,7 +41,7 @@ class ManParamLoader(ParameterLoader):
             ParameterLoader.__init__(self, manFilename);
             ParameterLoader.LoadFile(self);
 
-class Man(object):
+class Man(GameObject):
     """Man class defines properties and methods of a man"""
 
     def __init__(self, world, manParmLoader, steeringParmLoader, sex, age, position, velocity):
@@ -65,7 +65,7 @@ class Man(object):
         self.MaxForce = float(manParmLoader.Parameters.get('MaxForce'));
         self.Mass = float(manParmLoader.Parameters.get('Mass'));
         self.Size = float(manParmLoader.Parameters.get('Size'));
-        self.Scale = float(manParmLoader.Parameters.get('Scale'));
+        self.BoundingRadius = self.Size
         self.ViewDistance = float(manParmLoader.Parameters.get('ViewDistance'));
 
         # Create Steering Behavior
@@ -133,4 +133,4 @@ class Man(object):
 
         # Update the vehicle's current cell if space partitioning is turned on
         if self.Steering.IsPacePartitionOn():
-            print 'Not Implemented Yet'
+            self.World.CellSpace.UpdateEntity( self, oldPos )

@@ -30,7 +30,7 @@ class Cell(object):
         """Render the cell in the screen"""
         self.AABBox.Render()
 
-class CellSpacePartition:
+class SpacePartition:
     """Subdivision class"""
     def __init__( self, width, height, cellsX, cellsY, maxEntities ):
         """Parameters:
@@ -106,7 +106,7 @@ class CellSpacePartition:
         # if it does and it also contains entities then make further proximity tests
         for curCell in self.Cells:
             # test to see if its bounding box overlaops with the query box
-            if curCell.AABBox.IsOverlapWith( QueryBox ) and curCell.Members.count > 0:
+            if curCell.AABBox.IsOverlapWith( QueryBox ) and len(curCell.Members) > 0:
                 # add any entities found within query radius to the neighbor list
                 for entity in curCell.Members:
                     if entity.Pos.get_dist_sqrd( targetPos ) < queryRadius * queryRadius:
@@ -123,8 +123,9 @@ class CellSpacePartition:
         method calculates an index into its appropriate cell"""
         idx = int( self.NumCellsX * position.x / self.SpaceWidth ) + ( int( self.NumCellsY*position.y/self.SpaceHeight ) * self.NumCellsX )
         # check boundary
-        if idx > int( self.Cells.count() - 1 ):
-            idx = int(self.Cells.count - 1)
+        cellsLen = len(self.Cells)
+        if idx > int( cellsLen - 1 ):
+            idx = int(cellsLen - 1)
         return idx
 
     def FirstNeighbor( self ):
@@ -141,7 +142,7 @@ class CellSpacePartition:
 
     def EndNeighbor(self):
         """Returns true if the current entity is in the end of the neighbor list"""
-        return self.CurrentNeighbor == self.Neighbors[-1] or self.CurrentNeighbor == None or self.Neighbors.count == 0 or self.Neighbors == None
+        return self.CurrentNeighbor == self.Neighbors[-1] or self.CurrentNeighbor == None or len(self.Neighbors) == 0 or self.Neighbors == None
 
     def EmptyCells( self ):
         """Empty the cells of entities"""
