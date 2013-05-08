@@ -1,25 +1,37 @@
-from Utils import FileOperation
-from Game import Virus
+import pygame, sys
+from pygame.locals import *
+from GUI.Colors import Colors, Colors, Colors
+from GUI.DisplayScreen import DisplayScreen
+from Game.GameWorld import GameWorld
 
-pramLoader = FileOperation.ParameterLoader( "test.txt")
-pramLoader.LoadFile();
+pygame.init()
 
-virusParmLoder = Virus.VirusParamLoader( "BirdFlu.virus" );
-virus = Virus.Virus( virusParmLoder )
+# set up the window
+DISPLAYSURF = DisplayScreen.DisplaySurface
+pygame.display.set_caption('Drawing')
+# set up the colors
 
-print virus.Name
+# draw on the surface object
+DISPLAYSURF.fill(Colors.White)
 
-for i in range( 0, 10 ):
-    print i
+# Setup Timer
+fpsTimer = pygame.time.Clock()
+fpsTimer.tick()
 
-members = [ 1, 2, 3, 4, 5, 6, 7 ]
+posX = 0;
 
-one = members[3]
-mid = 3.5
-members.remove( one )
-print members
-members.insert( 3, mid )
-print members
-one = members[4]
+# run the game loop
+while True:
+    for event in pygame.event.get():
+         if event.type == QUIT:
+             pygame.quit()
+             sys.exit()
 
-print "End"
+    timeInSecond = fpsTimer.tick() / 1000 # Get the elapsed time in second
+    
+    pygame.draw.circle( DisplayScreen.DisplaySurface, Colors.Green, ( int(posX), 200 ), 5 )    
+
+    posX += 0.2
+    posX %= 600
+
+    pygame.display.update()

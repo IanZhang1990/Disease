@@ -117,6 +117,7 @@ class Man(GameObject):
 
         steeringForce = Vector2D( 0, 0)
         steeringForce = self.Steering.Calculate();
+        #print "SteeringForce: X= " + str(steeringForce.x) + " Y= " + str(steeringForce.y)
         if steeringForce is None:
             steeringForce = Vector2D( 0, 0 )
 
