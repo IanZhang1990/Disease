@@ -10,29 +10,29 @@ import math
 class Matrix3x3(object):
     """A simple 3x3 matrix which is frequently used in 2D games"""
 
-    def __init__( self ):
-        self.__00 = 0.0
-        self.__01 = 0.0
-        self.__02 = 0.0
-        self.__10 = 0.0
-        self.__11 = 0.0
-        self.__12 = 0.0
-        self.__20 = 0.0
-        self.__21 = 0.0
-        self.__22 = 0.0
+    def __init__( self, valueArray = None ):
+        if valueArray is None:
+            self.__00 = 0.0
+            self.__01 = 0.0
+            self.__02 = 0.0
+            self.__10 = 0.0
+            self.__11 = 0.0
+            self.__12 = 0.0
+            self.__20 = 0.0
+            self.__21 = 0.0
+            self.__22 = 0.0
+        else:
+            self.__00 = valueArray[0]
+            self.__01 = valueArray[1]
+            self.__02 = valueArray[2]
+            self.__10 = valueArray[3]
+            self.__11 = valueArray[4]
+            self.__12 = valueArray[5]
+            self.__20 = valueArray[6]
+            self.__21 = valueArray[7]
+            self.__22 = valueArray[8]
         pass
 
-    def __init__( self, _00, _01, _02, _10, _11, _12,_20, _21, _22 ):
-        self.__00 = _00
-        self.__01 = _01
-        self.__02 = _02
-        self.__10 = _10
-        self.__11 = _11
-        self.__12 = _12
-        self.__20 = _20
-        self.__21 = _21
-        self.__22 = _22
-        pass
 
     def Identity( self ):
         """Make the matrix identity"""
@@ -132,7 +132,7 @@ class Matrix3x3(object):
         mat = Matrix3x3()
         mat.__00 = 1; mat.__01 = 0; mat.__02 = 0;
         mat.__10 = 0; mat.__11 = 1;  mat.__12 = 0;
-        mat.__20 = x; mat.__21 = y; mat.__22 = 1;
+        mat.__20 = offsetX; mat.__21 = offsetY; mat.__22 = 1;
         self *= mat
         pass
 
@@ -169,7 +169,7 @@ class Matrix3x3(object):
                 vector.x = tempX
                 vector.y = tempY
 
-    def TranscormVector2D( self, vector2d ):
+    def TransformVector2D( self, vector2d ):
         """applies a 2D transformation matrix to a Vector2D instance"""
         if isinstance( vector2d, Vector2D ):
             tempX = ( self.__00 * vector2d.x ) + ( self.__10 * vector2d.y ) + self.__20

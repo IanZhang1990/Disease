@@ -15,7 +15,7 @@ from Math.Vector import Vector2D
 class Cell(object):
     """defines a cell containing a list of pointers to entities"""
     def __init__(self, topLeft, bottomRight):
-        self.Memebrs = list()                                # all the entities inhabiting this cell
+        self.Members = list()                                # all the entities inhabiting this cell
         self.AABBox = None                                 # The cell's bouding box.
 
         if type( topLeft ) == type( Vector2D ) and type( bottomRight ) == type( Vector2D ):
@@ -24,7 +24,7 @@ class Cell(object):
 
     def Empty(self):
         """empty its member list"""
-        self.Memebrs = list()
+        self.Members = list()
 
     def Render( self ):
         """Render the cell in the screen"""
@@ -85,7 +85,7 @@ class SpacePartition:
         newIdx = self.PartitionToIndex( entity.Pos ) 
         if oldIdx == newIdx:
             return
-
+        
         self.Cells[oldIdx].Members.remove( entity )
         self.Cells[newIdx].Members.append( entity ) 
         pass

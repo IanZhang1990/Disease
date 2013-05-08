@@ -25,6 +25,23 @@ class Math2D(object):
             posVect2d.y = float(maxY)
 
 class Transformations:
+    @staticmethod 
+    def PointToWorldSpace( point, agentHeading, agentSide, agentPosition  ):
+        """Transforms a point from the agent's local space into world space
+        Parameters:
+        @point: Vector2D
+        @agentHeading: Vector2D
+        @agentSide: Vector2D
+        @agentPosition: Vector2D"""
+        transPoint = copy(point);
+        matTrans = Matrix3x3()
+        matTrans.Rotate( agentHeading, agentSide )
+        matTrans.Translate( agentPosition.x, agentPosition.y )
+        matTrans.TransformVector2D( transPoint )
+
+        return transPoint
+
+
     @staticmethod
     def VectorToWorldSpace( vector, agentHeading, agentSide ):
         """Transforms a vector from the agent's local space into world space
@@ -47,7 +64,7 @@ class Transformations:
         @agentHeading: Vector2D
         @agentSide: Vector2D
         @agentPosition: Vector2D"""
-        transPoint = point
+        transPoint = copy(point)
         matTrans = Matrix3x3()
         Tx = - agentPosition.dot( agentHeading )
         Ty = - agentPosition.dot( agentSide )
@@ -72,7 +89,7 @@ class Transformations:
         @agentHeading: Vector2D
         @agentSide: Vector2D"""
 
-        transPoint = vector
+        transPoint = copy(vector)
         matTrans = Matrix3x3()
         # create a transformation matrix
         matTrans.__00 = agentHeading.x

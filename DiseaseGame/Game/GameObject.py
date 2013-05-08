@@ -10,7 +10,7 @@ from Math.Vector import Vector2D
 class GameObject(object):
     """Base Class of all visible objects in the scene"""
 
-    def __init__( self ):
+    def __init__( self, position, radius, max_speed, heading, mass, scale, turn_rate, max_force ):
         """
         Constructor
         """
@@ -18,6 +18,30 @@ class GameObject(object):
         self.Scale = Vector2D( 1.0, 1.0 )
         self.BoundingRadius = 0
         self.Pos = Vector2D( 0, 0 )
+        self.Heading = Vector2D( 0, 0 )
+        self.MaxTurnRate = 1.0
+        self.Mass = 1.0
+
+
+        if position is not None and isinstance( position, Vector2D ):
+            self.Pos = position
+        if heading is not None and isinstance( heading, Vector2D ):
+            self.Heading = heading
+        if radius is not None:
+            self.BoundingRadius = radius
+        if max_speed is not None:
+            self.MaxSpeed = max_speed
+        if mass is not None:
+            self.Mass = mass
+        if scale is not None :
+            self.Scale = scale
+        if turn_rate is not None:
+            self.MaxTurnRate = turn_rate
+        if max_force is not None:
+            self.MaxForce = max_force
+
+        self.Side = self.Heading.perpendicular()
+
         pass
 
     def Render(self):

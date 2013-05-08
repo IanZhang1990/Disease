@@ -14,6 +14,7 @@ from GUI.DisplayScreen import DisplayScreen
 from GUI.Colors import Colors
 from Utils.FileOperation import ParameterLoader
 from Game.GameObject import GameObject
+import math
 
 #===========================================================
 #           ManParamLoader Class
@@ -44,13 +45,16 @@ class ManParamLoader(ParameterLoader):
 class Man(GameObject):
     """Man class defines properties and methods of a man"""
 
-    def __init__(self, world, manParmLoader, steeringParmLoader, sex, age, position, velocity):
+    def __init__(self, world, manParmLoader, steeringParmLoader, sex, age, position, velocity, rotation = 0 ):
+
+        GameObject.__init__( self, position, None, None, Vector2D( math.sin(rotation), -math.cos(rotation) ), None, None, None, None )
+
         self.Sex = str("Male")                            # By default, the man is a male.
         self.Disease = None                                 # Virus
         self.Age = 20                                         # Age
         self.Sickness = 0.0                                 # Not yet sick
         self.City = None                                      # In None City
-        self.World = world                                # The game world the man is in
+        self.World = world                                 # The game world the man is in
         self.Steering = None                               # SteeringBehavior
         self.LeftIncubationDay = 0                    # Not infected man have no incubation day
         self.DateGetInfected = None;                  # The date the man got sick
@@ -58,7 +62,7 @@ class Man(GameObject):
         self.MetList = []                                    # The list of man he met after getting infected.
         self.Quarantine = False                          # Not infected, not quarantined.
         self.ManStateMachine = None                 # A man's statemachine
-        self.DrawingColor = Colors.Green           # A normal man looks green.
+        self.DrawingColor = Colors.Green            # A normal man looks green.
 
         # Get Parameters from Parameter Loader
         self.MaxSpeed = float(manParmLoader.Parameters.get('MaxSpeed', 20));
@@ -97,8 +101,6 @@ class Man(GameObject):
     def IsInfected(self):
         """True, if the man is infected by a virus"""
         return (self.Disease != None)
-        
-
 
 
     ##########################################################
