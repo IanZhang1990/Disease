@@ -9,6 +9,7 @@
 
 import operator
 import math
+import copy
 
 class Vector2D(object):
     """2d vector class, supports vector and scalar operators,
@@ -340,5 +341,8 @@ class Vector2D(object):
         """Truncates a vector so that its length does not exceed max"""
         if self.get_length() > max:
             self = self.normalized()
-            self  = (self * max)
+            temp = (self * max)
+            self.x = temp.x
+            self.y = temp.y
+            print self
 
