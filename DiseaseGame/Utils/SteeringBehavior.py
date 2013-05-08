@@ -4,6 +4,7 @@ import random
 import math
 from Utils.Path import Path
 from Math.Vector import Vector2D
+from Math import Math2D
 # Filename: SteeringBehavior.py
 # Author: Ian Zhang
 # Description: This file defines steering behavior related classes
@@ -68,7 +69,7 @@ class SteeringBehavior(object):
         self.WanderRadius = 1.2
         self.WanderTarget = None                                                                              # the current position on the wander circle the agent is attempting to steer towards
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
-        self.CellSpaceOn = True
+        self.CellSpaceOn = False
         self.SummingMethod = SummingMethod.WEIGHTED_AVG;
 
         self.WanderWeight = float(parmLoader.Parameters.get('WanderWeight', 1.0))
@@ -196,7 +197,11 @@ class SteeringBehavior(object):
         # move the target into a position WanderDist in front of the agent
         target = self.WanderTarget + Vector2D( self.WanderDistance, 0 )
 
-        raise StandardError
+        # project the target into world space
+        targetInWorld = Math2D.Transformations.PointToWorldSpace( target, self.Owener.Heading, self.Owener.Side, self.Owener.Pos );
+
+        # and steer towards it
+        return targetInWorld - self.Owener.Pos
 
 ######################################################################################
     def SetTarget( self, targetPos ):
