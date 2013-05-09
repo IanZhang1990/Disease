@@ -6,34 +6,29 @@
 
 from Math.Vector import Vector2D
 import math
+import copy
 
 class Matrix3x3(object):
     """A simple 3x3 matrix which is frequently used in 2D games"""
 
     def __init__( self, valueArray = None ):
         if valueArray is None:
-            self.__00 = 0.0
-            self.__01 = 0.0
-            self.__02 = 0.0
-            self.__10 = 0.0
-            self.__11 = 0.0
-            self.__12 = 0.0
-            self.__20 = 0.0
-            self.__21 = 0.0
-            self.__22 = 0.0
+            self.__values = [[0,0,0],[0,0,0],[0,0,0]]
+        elif isinstance( valueArray, list ) and len( valueArray ) >= 9:
+            self.__values[0][0] = value[0]
+            self.__values[0][1] = value[1]
+            self.__values[0][2] = value[2]
+            self.__values[1][0] = value[3]
+            self.__values[1][1] = value[4]
+            self.__values[1][2] = value[5]
+            self.__values[2][0] = value[6]
+            self.__values[2][1] = value[7]
+            self.__values[2][2] = value[8]
         else:
-            self.__00 = valueArray[0]
-            self.__01 = valueArray[1]
-            self.__02 = valueArray[2]
-            self.__10 = valueArray[3]
-            self.__11 = valueArray[4]
-            self.__12 = valueArray[5]
-            self.__20 = valueArray[6]
-            self.__21 = valueArray[7]
-            self.__22 = valueArray[8]
+            return                    
+
         self.Identity()
         pass
-
 
     def Identity( self ):
         """Make the matrix identity"""
@@ -76,7 +71,8 @@ class Matrix3x3(object):
         """Matrix = Matrix * other"""
         if isinstance( other, Matrix3x3 ):
             temp = self * other
-            self.__copy( temp )
+            #self.__copy( temp )
+            self.__values = copy(temp.__values)
         else:
             raise TypeError()
         pass
@@ -97,7 +93,8 @@ class Matrix3x3(object):
         """+="""
         if ( isinstance( other, Matrix3x3 ) ):
             temp = self + other
-            self.__copy( temp )
+            #self.__copy( temp )
+            self.__values = copy(temp.__values)
         else:
             raise TypeError()
 
@@ -117,7 +114,8 @@ class Matrix3x3(object):
         """+="""
         if ( isinstance( other, Matrix3x3 ) ):
             temp = self - other
-            self.__copy( temp )
+            self.__values = copy(temp.__values)
+            #self.__copy( temp )
         else:
             raise TypeError()
 
@@ -130,7 +128,8 @@ class Matrix3x3(object):
         temp.__20 = 0.0; temp.__21 = 0; temp.__22 = 1.0;
         
         temp2 = self * temp
-        self.__copy( temp2 )
+        #self.__copy( temp2 )
+        self.__values = copy(temp2.__values)
         pass
 
     def Translate( self, offsetX, offsetY ):
@@ -140,7 +139,8 @@ class Matrix3x3(object):
         mat.__10 = 0; mat.__11 = 1;  mat.__12 = 0;
         mat.__20 = offsetX; mat.__21 = offsetY; mat.__22 = 1;
         temp = self * mat
-        self.__copy( temp )
+        #self.__copy( temp )
+        self.__values = (temp.__values)
         pass
 
     def Rotate( self, rot ):
@@ -154,7 +154,8 @@ class Matrix3x3(object):
         mat.__10 = -Sin;          mat.__11 = Cos;        mat.__12 = 0;
         mat.__20 = 0;              mat.__21 = 0;              mat.__22 = 1;
         temp = self * mat
-        self.__copy( temp )
+        #self.__copy( temp )
+        self.__values = (temp.__values)
 
     def Rotate( self, forward, side ):
         """Rotate the matrix with two vectors"""
@@ -164,7 +165,8 @@ class Matrix3x3(object):
             mat.__10 = side.x;        mat.__11 = side.y;        mat.__12 = 0;
             mat.__20 = 0;              mat.__21 = 0;              mat.__22 = 1;
             temp = self * mat
-            self.__copy( temp )
+            #self.__copy( temp )
+            self.__values = (temp.__values)
         else:
             raise TypeError()
         pass
@@ -191,3 +193,97 @@ class Matrix3x3(object):
             self.__00 = other.__00; self.__01 = other.__01; self.__02 = other.__02;
             self.__10 = other.__10; self.__11 = other.__11; self.__12 = other.__12;
             self.__20 = other.__20; self.__21 = other.__21; self.__22 = other.__22;
+
+            
+    ##############
+    ### Define Properties
+    @property
+    def __00( self ):
+        return self.__values[0][0]
+    @__00.setter
+    def __00( self, value ):
+        self.__values[0][0] = value
+    @__00.deleter
+    def __00( self ):
+        pass
+
+    @property
+    def __01( self ):
+        return self.__values[0][1]
+    @__01.setter
+    def __01( self, value ):
+        self.__values[0][1] = value
+    @__01.deleter
+    def __01( self ):
+        pass
+
+    @property
+    def __02( self ):
+        return self.__values[0][2]
+    @__02.setter
+    def __02( self, value ):
+        self.__values[0][2] = value
+    @__02.deleter
+    def __02( self ):
+        pass
+
+    @property
+    def __10( self ):
+        return self.__values[1][0]
+    @__10.setter
+    def __10( self, value ):
+        self.__values[1][0] = value
+    @__10.deleter
+    def __10( self ):
+        pass
+
+    @property
+    def __11( self ):
+        return self.__values[1][1]
+    @__11.setter
+    def __11( self, value ):
+        self.__values[1][1] = value
+    @__11.deleter
+    def __11( self ):
+        pass
+
+    @property
+    def __12( self ):
+        return self.__values[1][2]
+    @__12.setter
+    def __12( self, value ):
+        self.__values[1][2] = value
+    @__12.deleter
+    def __12( self ):
+        pass
+
+    @property
+    def __20( self ):
+        return self.__values[2][0]
+    @__20.setter
+    def __20( self, value ):
+        self.__values[2][0] = value
+    @__20.deleter
+    def __20( self ):
+        pass
+
+    @property
+    def __21( self ):
+        return self.__values[2][1]
+    @__21.setter
+    def __21( self, value ):
+        self.__values[2][1] = value
+    @__21.deleter
+    def __21( self ):
+        pass
+
+    @property
+    def __22( self ):
+        return self.__values[2][2]
+    @__22.setter
+    def __22( self, value ):
+        self.__values[2][2] = value
+    @__22.deleter
+    def __2( self ):
+        pass
+    

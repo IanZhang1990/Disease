@@ -194,6 +194,8 @@ class SteeringBehavior(object):
         self.WanderTarget = self.WanderTarget * self.WanderRadius
 
         # move the target into a position WanderDist in front of the agent
+
+        #normalVect = Vector2D( random.uniform( -2,2 ), random.uniform( -2,2 ) ).normalized()
         target = self.WanderTarget + Vector2D( self.WanderDistance, 0 )
 
         # project the target into world space

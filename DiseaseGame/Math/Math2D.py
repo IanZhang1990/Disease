@@ -1,7 +1,10 @@
 
 
 
-from copy import copy
+
+
+
+from copy import copy, deepcopy
 import math
 from Math.Matrix import Matrix3x3
 from Math.Vector import Vector2D
@@ -33,7 +36,7 @@ class Transformations:
         @agentHeading: Vector2D
         @agentSide: Vector2D
         @agentPosition: Vector2D"""
-        transPoint = copy(point);
+        transPoint = deepcopy(point);
         matTrans = Matrix3x3()
         matTrans.Rotate( agentHeading, agentSide )
         matTrans.Translate( agentPosition.x, agentPosition.y )
@@ -50,7 +53,7 @@ class Transformations:
         @agentHeading: Vector2D
         @agentSide: Vector2D
         """
-        transVect = copy( vector )
+        transVect = deepcopy( vector )
         matTrans = Matrix3x3()
         matTrans.Rotate( agentHeading, agentSide )
         matTrans.TransformVector2D( transVect )
@@ -64,7 +67,7 @@ class Transformations:
         @agentHeading: Vector2D
         @agentSide: Vector2D
         @agentPosition: Vector2D"""
-        transPoint = copy(point)
+        transPoint = deepcopy(point)
         matTrans = Matrix3x3()
         Tx = - agentPosition.dot( agentHeading )
         Ty = - agentPosition.dot( agentSide )
@@ -89,7 +92,7 @@ class Transformations:
         @agentHeading: Vector2D
         @agentSide: Vector2D"""
 
-        transPoint = copy(vector)
+        transPoint = deepcopy(vector)
         matTrans = Matrix3x3()
         # create a transformation matrix
         matTrans.__00 = agentHeading.x

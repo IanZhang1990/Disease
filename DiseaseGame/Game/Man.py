@@ -15,6 +15,7 @@ from GUI.Colors import Colors
 from Utils.FileOperation import ParameterLoader
 from Game.GameObject import GameObject
 import math
+import random
 
 #===========================================================
 #           ManParamLoader Class
@@ -46,6 +47,9 @@ class Man(GameObject):
     """Man class defines properties and methods of a man"""
 
     def __init__(self, world, manParmLoader, steeringParmLoader, sex, age, position, velocity, rotation = 0 ):
+
+        if rotation == 0:
+            rotation = random.uniform( 0, 360 )     # random rotation
 
         GameObject.__init__( self, position, None, None, Vector2D( math.sin(rotation), -math.cos(rotation) ), None, None, None, None )
 
