@@ -31,6 +31,7 @@ class Matrix3x3(object):
             self.__20 = valueArray[6]
             self.__21 = valueArray[7]
             self.__22 = valueArray[8]
+        self.Identity()
         pass
 
 
@@ -74,7 +75,8 @@ class Matrix3x3(object):
     def __imul__( self, other ):
         """Matrix = Matrix * other"""
         if isinstance( other, Matrix3x3 ):
-            self = self * other
+            temp = self * other
+            self.__copy( temp )
         else:
             raise TypeError()
         pass
@@ -94,7 +96,8 @@ class Matrix3x3(object):
     def __iadd__(self, other):
         """+="""
         if ( isinstance( other, Matrix3x3 ) ):
-            self = self + other
+            temp = self + other
+            self.__copy( temp )
         else:
             raise TypeError()
 
@@ -113,7 +116,8 @@ class Matrix3x3(object):
     def __isub__(self, other):
         """+="""
         if ( isinstance( other, Matrix3x3 ) ):
-            self = self - other
+            temp = self - other
+            self.__copy( temp )
         else:
             raise TypeError()
 
@@ -124,7 +128,9 @@ class Matrix3x3(object):
         temp.__00 = xScale; temp.__01 = 0; temp.__02 = 0;
         temp.__10 = 0.0; temp.__11 = yScale; temp.__12 = 0;
         temp.__20 = 0.0; temp.__21 = 0; temp.__22 = 1.0;
-        self *= temp
+        
+        temp2 = self * temp
+        self.__copy( temp2 )
         pass
 
     def Translate( self, offsetX, offsetY ):
@@ -133,7 +139,8 @@ class Matrix3x3(object):
         mat.__00 = 1; mat.__01 = 0; mat.__02 = 0;
         mat.__10 = 0; mat.__11 = 1;  mat.__12 = 0;
         mat.__20 = offsetX; mat.__21 = offsetY; mat.__22 = 1;
-        self *= mat
+        temp = self * mat
+        self.__copy( temp )
         pass
 
     def Rotate( self, rot ):
@@ -146,7 +153,8 @@ class Matrix3x3(object):
         mat.__00 = Cos;           mat.__01 = Sin;           mat.__02 = 0;
         mat.__10 = -Sin;          mat.__11 = Cos;        mat.__12 = 0;
         mat.__20 = 0;              mat.__21 = 0;              mat.__22 = 1;
-        self *= mat
+        temp = self * mat
+        self.__copy( temp )
 
     def Rotate( self, forward, side ):
         """Rotate the matrix with two vectors"""
@@ -155,7 +163,8 @@ class Matrix3x3(object):
             mat.__00 = forward.x; mat.__01 = forward.y; mat.__02 = 0;
             mat.__10 = side.x;        mat.__11 = side.y;        mat.__12 = 0;
             mat.__20 = 0;              mat.__21 = 0;              mat.__22 = 1;
-            self *= mat
+            temp = self * mat
+            self.__copy( temp )
         else:
             raise TypeError()
         pass
@@ -176,3 +185,9 @@ class Matrix3x3(object):
             tempY = ( self.__01 * vector2d.x ) + ( self.__11 * vector2d.y ) + self.__21
             vector2d.x = tempX
             vector2d.y = tempY
+
+    def __copy( self, other ):
+        if isinstance( other, Matrix3x3 ):
+            self.__00 = other.__00; self.__01 = other.__01; self.__02 = other.__02;
+            self.__10 = other.__10; self.__11 = other.__11; self.__12 = other.__12;
+            self.__20 = other.__20; self.__21 = other.__21; self.__22 = other.__22;

@@ -91,8 +91,7 @@ class SteeringBehavior(object):
     def Calculate( self ):
         """calculates the accumulated steering force according to the method set in self.SummingMethod"""
         # Reset the steering force
-        self.SteeringForce.x = 0
-        self.SteeringForce.y = 0
+        self.SteeringForce = Vector2D( 0, 0 )
 
         # use space partitioning to calculate the neighbours of this vehicle
         #if switched on. If not, use the standard tagging system
@@ -109,12 +108,12 @@ class SteeringBehavior(object):
 
         if self.SummingMethod == SummingMethod.WEIGHTED_AVG:
             self.SteeringForce = self.CalculateWeightedSum()
+        elif self.SummingMethod == SummingMethod.PRIORITIZED:
+            self.SteeringForce = self.CalculatePrioritized()
+        elif self.SummingMethod == SummingMethod.DITHERED:
+            self.SteeringForce = self.CalculateDithered()
         else:
-            if self.SummingMethod == SummingMethod.PRIORITIZED:
-                self.SteeringForce = self.CalculatePrioritized()
-            else:
-                if self.SummingMethod == SummingMethod.DITHERED:
-                    self.SteeringForce = self.CalculateDithered()
+            self.SteeringForce = Vector2D( 0, 0 )
         return self.SteeringForce
 
     def CalculatePrioritized( self ):

@@ -340,9 +340,8 @@ class Vector2D(object):
     def Truncate( self, max ):
         """Truncates a vector so that its length does not exceed max"""
         if self.get_length() > max:
-            self = self.normalized()
-            temp = (self * max)
-            self.x = temp.x
-            self.y = temp.y
-            print self
+            temp = self.normalized()
+            temp2 = (temp * max)
+            self.x = temp2.x
+            self.y = temp2.y
 
