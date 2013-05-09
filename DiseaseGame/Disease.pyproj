@@ -33,6 +33,7 @@
     <Compile Include="Game\__init__.py" />
     <Compile Include="GUI\Colors.py" />
     <Compile Include="GUI\DisplayScreen.py" />
+    <Compile Include="GUI\GUIFonts.py" />
     <Compile Include="GUI\__init__.py" />
     <Compile Include="Math\InvertedAABBox2D.py" />
     <Compile Include="Math\Math2D.py" />

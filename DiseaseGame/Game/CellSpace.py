@@ -85,9 +85,15 @@ class SpacePartition:
         newIdx = self.PartitionToIndex( entity.Pos ) 
         if oldIdx == newIdx:
             return
-        
-        self.Cells[oldIdx].Members.remove( entity )
-        self.Cells[newIdx].Members.append( entity ) 
+        try:
+            self.Cells[oldIdx].Members.remove( entity )
+        except:
+            pass
+        try:
+            self.Cells[newIdx].Members.append( entity )
+        except:
+            pass
+
         pass
 
     def CalculateNeighbors( self, targetPos, queryRadius ):

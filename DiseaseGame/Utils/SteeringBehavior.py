@@ -60,7 +60,7 @@ class SteeringBehavior(object):
         # These can be used to keep track of friends, pursuers, or prey
         self.TargetAgent1 = None
         self.TargetAgent2 = None
-        self.Target = None             # The current target
+        self.Target = None       # The current target
 
         self.DBoxLength = float(parmLoader.Parameters.get('MinDetectionBoxLength', 40.0))        # length of the 'detection box' utilized in obstacle avoidance
         self.ViewDistance = self.Owener.ViewDistance                                                # how far the agent can 'see'
@@ -69,7 +69,7 @@ class SteeringBehavior(object):
         self.WanderRadius = 1.2
         self.WanderTarget = None                                                                              # the current position on the wander circle the agent is attempting to steer towards
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
-        self.CellSpaceOn = False
+        self.CellSpaceOn = True
         self.SummingMethod = SummingMethod.WEIGHTED_AVG;
 
         self.WanderWeight = float(parmLoader.Parameters.get('WanderWeight', 1.0))
