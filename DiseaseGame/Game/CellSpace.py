@@ -81,6 +81,9 @@ class SpacePartition:
         Parameters:
             @entity: the entity you want to update. ( Man )
             @oldPos: the entity's old position, ( Vector2D )"""
+        # TODO:
+        # Updating an entity's cell index will be very important for multi-thread
+
         oldIdx = self.PartitionToIndex( oldPos )
         newIdx = self.PartitionToIndex( entity.Pos ) 
         if oldIdx == newIdx:
@@ -94,7 +97,7 @@ class SpacePartition:
         except:
             pass
 
-        pass
+
 
     def CalculateNeighbors( self, targetPos, queryRadius ):
         """this method calculates all a target's neighbors and stores them in

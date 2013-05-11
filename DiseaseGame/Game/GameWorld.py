@@ -62,6 +62,12 @@ class GameWorld(object):
 
     def Render(self):
         """Render objects to the screen"""
+
+        # TODO:
+        # I'm not quite sure about this section, but it seems render() method can be called asynchronized, 
+        # as long as it is before pygame.draw.update() is called.
+        # So... why not try to make this multi-threaded? 
+
         if not self.Pause:
             for person in self.People:
                 person.Render()
@@ -76,6 +82,12 @@ class GameWorld(object):
 
     def Update( self, elapsedTime ):
         """Update all the game objects"""
+        # TODO:
+        # This section has to be implemented by multi-thread ( or even distributed system )
+        # Since all game objects are located in a specific cell-space( world is partitioned into several cells  )
+        # Each cell can maintain its own status without knowing others, and also, update objects inside it. 
+        # Or in other words, each cell can be autonomous
+
         if not self.Pause:
             for person in self.People:
                 person.Update( elapsedTime )
