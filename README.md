@@ -1,8 +1,7 @@
 Disease
 =========
 
-<b>I should finish my graduation required paper first before coming back to work on the project. That will be no earlier than May 20th. </b>
-
+<b>I should finish my graduation required paper first before coming back to work on the project. That will be no earlier than May 20th. I found nobody stared or watches this project, so in theory ther won't be any people be disappointed. Haha....</b>
 
 This is a game that simulates virus spreading among people in a city or cities. It is written in Python with Pygame. I wish the game can help people understand how virus can spread and be controlled.
 
