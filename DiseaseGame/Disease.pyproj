@@ -6,7 +6,7 @@
     <ProjectGuid>{2653dca8-d471-46fe-bd24-9b99fd77833c}</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>DiseaseGame.py</StartupFile>
+    <StartupFile>ThreadTest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -48,6 +48,7 @@
     <Compile Include="StateMachine\StateMachine.py" />
     <Compile Include="StateMachine\HospitalStates.py" />
     <Compile Include="StateMachine\__init__.py" />
+    <Compile Include="ThreadTest.py" />
     <Compile Include="Utils\FileOperation.py" />
     <Compile Include="Utils\Path.py" />
     <Compile Include="Utils\SteeringBehavior.py" />
