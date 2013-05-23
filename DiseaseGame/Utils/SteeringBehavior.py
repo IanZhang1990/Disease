@@ -69,7 +69,7 @@ class SteeringBehavior(object):
         self.WanderRadius = 1.2
         self.WanderTarget = None                                                                              # the current position on the wander circle the agent is attempting to steer towards
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
-        self.CellSpaceOn = False
+        self.CellSpaceOn = True
         self.SummingMethod = SummingMethod.WEIGHTED_AVG;
 
         self.WanderWeight = float(parmLoader.Parameters.get('WanderWeight', 1.0))
@@ -104,6 +104,7 @@ class SteeringBehavior(object):
             # calculate neighbours in cell-space
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
+                
                 self.Owener.World.CellSpace.CalculateNeighbors( self.Owener.Pos, self.ViewDistance )
 
         if self.SummingMethod == SummingMethod.WEIGHTED_AVG:

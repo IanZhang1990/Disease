@@ -33,12 +33,14 @@ class CellThread(threading.Thread): #The timer class is derived from the class t
             
             if( updateCellCount < ThreadManager.totalThreadCount ):
                 # Update each member in the cell
+                print str(len(self.cellSpace.Members)) + " members"
                 for man in self.cellSpace.Members:
                     man.Update( self.__timeElapsed__ )
 
                 #ThreadManager.postUpdateQueue.put_nowait( (self.thread_name, "_VALUE") )
                 updateCellCount = updateCellCount + 1
             if updateCellCount >= ThreadManager.totalThreadCount:
+                time.sleep( 0.5 )
                 UpdateFinishedEvent.set() 
                 pass
             self.BeginUpdateEvent.clear()
@@ -54,12 +56,13 @@ class CellThread(threading.Thread): #The timer class is derived from the class t
 class ThreadManager:
 
     # TODO: Change this
-    totalThreadCount = 4 * 3
+    totalThreadCount = 1
     postUpdateQueue = Queue()
     threadPool = list()
 
     def __init__( self, CellSpace ):
         self.CellsSpace = CellSpace
+        self.totalThreadCount = CellSpace.GameWorld.CellsX * CellSpace.GameWorld.CellsY
         if isinstance(self.CellsSpace.Cells, list):
             for cell in self.CellsSpace.Cells:
                 newThread = CellThread( cell )
@@ -79,9 +82,12 @@ class ThreadManager:
         # 1. update threads will give some job to this thread
         for cellthread in self.threadPool:
             cellthread.Update( timeElapsed )
+            #print len(cellthread.cellSpace.Members)
 
+        print "wait"
         # 2. wait for all the update threads finish their jobs
         UpdateFinishedEvent.wait()
+        print "post process"
         # 3. post process the postUpdateDict
         while True:
             try:
