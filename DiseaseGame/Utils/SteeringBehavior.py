@@ -69,7 +69,7 @@ class SteeringBehavior(object):
         self.WanderRadius = 1.2
         self.WanderTarget = None                                                                              # the current position on the wander circle the agent is attempting to steer towards
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
-        self.CellSpaceOn = True
+        self.CellSpaceOn = False
         self.SummingMethod = SummingMethod.WEIGHTED_AVG;
 
         self.WanderWeight = float(parmLoader.Parameters.get('WanderWeight', 1.0))

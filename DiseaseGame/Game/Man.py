@@ -140,4 +140,4 @@ class Man(GameObject):
 
         # Update the vehicle's current cell if space partitioning is turned on
         if self.Steering.IsPacePartitionOn():
-            self.World.CellSpace.UpdateEntity( self, oldPos )
+            self.World.CellSpace.UpdateEntity_Blocked( self, oldPos )

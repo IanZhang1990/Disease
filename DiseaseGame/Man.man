@@ -1,5 +1,5 @@
 
-AgentNumber       = 400
+AgentNumber       = 300
 Mass              = 1.0
 Size		  = 5
 MaxForce	  = 200.0

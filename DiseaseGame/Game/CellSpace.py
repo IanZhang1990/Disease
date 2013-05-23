@@ -1,6 +1,4 @@
 #=====================================================================================
-from Math.InvertedAABBox2D import InvertedAABBox2D
-from Math.Vector import Vector2D
 # Filename: CellSpace.py
 # Author: Ian Zhang
 # Description: Class to divide a 2D space into a grid of cells each of which
@@ -11,6 +9,11 @@ from Math.Vector import Vector2D
 #                   between cells, the Update method should be called each update-cycle
 #                   to sychronize the entity and the cell space it occupies
 #=====================================================================================
+from Math.InvertedAABBox2D import InvertedAABBox2D
+from Math.Vector import Vector2D
+from Utils import ThreadManagement
+
+
 
 class Cell(object):
     """defines a cell containing a list of pointers to entities"""
@@ -18,7 +21,7 @@ class Cell(object):
         self.Members = list()                                # all the entities inhabiting this cell
         self.AABBox = None                                 # The cell's bouding box.
 
-        if type( topLeft ) == type( Vector2D ) and type( bottomRight ) == type( Vector2D ):
+        if isinstance( topLeft, Vector2D ) and isinstance( bottomRight, Vector2D ):
             self.AABBox = InvertedAABBox2D( topLeft, bottomRight )
         pass
 
@@ -28,11 +31,12 @@ class Cell(object):
 
     def Render( self ):
         """Render the cell in the screen"""
-        self.AABBox.Render()
+        if( self.AABBox != None ):
+            self.AABBox.Render()
 
 class SpacePartition:
     """Subdivision class"""
-    def __init__( self, width, height, cellsX, cellsY, maxEntities ):
+    def __init__( self, width, height, cellsX, cellsY, maxEntities, gameWorld ):
         """Parameters:
             @width: width of the environment
             @height: height of the environment
@@ -48,6 +52,7 @@ class SpacePartition:
         self.NumCellsY = cellsY
         self.NumOfEntities = 0
         self.MaxEntities = maxEntities
+        self.GameWorld = gameWorld
         
         # Calculate bounds of each cell
         self.CellSizeX = width / cellsX
@@ -76,7 +81,7 @@ class SpacePartition:
             self.NumOfEntities = self.NumOfEntities + 1
         pass
 
-    def UpdateEntity( self, entity, oldPos ):
+    def UpdateEntity_Blocked( self, entity, oldPos ):
         """Update an entity's cell by calling this from the entity's Update() method.
         Parameters:
             @entity: the entity you want to update. ( Man )
@@ -84,9 +89,21 @@ class SpacePartition:
         # TODO:
         # Updating an entity's cell index will be very important for multi-thread
 
+        if( not self.GameWorld.MultiThreadUpdate ):
+            self.UpdateEntity_NoBlock( entity, oldPos, False )
+        else:
+            oldIdx = self.PartitionToIndex( oldPos )
+            newIdx = self.PartitionToIndex( entity.Pos ) 
+            if oldIdx == newIdx:
+                return
+            else:
+                self.GameWorld.CellThreadManagement.postUpdateQueue.put_nowait( ( entity, oldPos ) )
+
+
+    def UpdateEntity_NoBlock( self, entity, oldPos, ifFirstTime = False ):
         oldIdx = self.PartitionToIndex( oldPos )
         newIdx = self.PartitionToIndex( entity.Pos ) 
-        if oldIdx == newIdx:
+        if oldIdx == newIdx and not ifFirstTime:
             return
         try:
             self.Cells[oldIdx].Members.remove( entity )
@@ -96,8 +113,6 @@ class SpacePartition:
             self.Cells[newIdx].Members.append( entity )
         except:
             pass
-
-
 
     def CalculateNeighbors( self, targetPos, queryRadius ):
         """this method calculates all a target's neighbors and stores them in

@@ -44,4 +44,6 @@ while True:
 
     gameWorld.Render()
     pygame.display.flip()
+    if( gameWorld.MultiThreadUpdate ):
+        pygame.time.wait( 35 )
     

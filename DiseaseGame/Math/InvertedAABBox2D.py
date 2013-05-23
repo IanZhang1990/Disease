@@ -39,6 +39,5 @@ class InvertedAABBox2D(object):
                      or AABBox.Right() < self.Left() )
 
     def Render(self):
-        lines = [ (self.Top(),  self.Left()), (self.Top(), self.Right()), (self.Bottom(), self.Right()), (self.Bottom(),self.Left()), (self.Top(),  self.Left()) ]
-
-        pygame.draw.lines( DisplayScreen.DisplaySurface, Colors.Azure )
+        lines = [ (self.Left(),  self.Top()), (self.Right(), self.Top()), (self.Right(), self.Bottom()), (self.Left(),self.Bottom()), (self.Left(),  self.Top()) ]
+        pygame.draw.lines( DisplayScreen.DisplaySurface, Colors.BlueViolet, False, lines )
