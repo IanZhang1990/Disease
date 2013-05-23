@@ -78,7 +78,7 @@ class GameWorld(object):
 
         if not self.Pause:
             for person in self.People:
-                person.Render()
+                    person.Render()
             for doctor in self.Doctors:
                 doctor.Render()
             for city in self.Cities:
