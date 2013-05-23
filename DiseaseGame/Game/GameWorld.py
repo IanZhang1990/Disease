@@ -36,7 +36,7 @@ class GameWorld(object):
 
     ManPath = None                     # any path we may create for the men to follow
 
-    CellsX = 1
+    CellsX = 2
     CellsY = 1
 
     MultiThreadUpdate = True

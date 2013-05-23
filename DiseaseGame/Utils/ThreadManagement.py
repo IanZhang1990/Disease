@@ -11,7 +11,7 @@ import datetime
 ##########################################
 
 updateCellCount = 0
-#BeginUpdateEvent = threading.Event()
+BeginUpdateEvent = threading.Event()
 UpdateFinishedEvent = threading.Event()
 
 class CellThread(threading.Thread): #The timer class is derived from the class threading.Thread  
@@ -51,7 +51,6 @@ class CellThread(threading.Thread): #The timer class is derived from the class t
     def Update( self, timeElapsed ):
         self.__timeElapsed__ = timeElapsed;
         self.BeginUpdateEvent.set()
-
 
 class ThreadManager:
 
@@ -96,3 +95,4 @@ class ThreadManager:
             except:
                 break
         ThreadManager.postUpdateQueue = Queue()
+        UpdateFinishedEvent.clear()
