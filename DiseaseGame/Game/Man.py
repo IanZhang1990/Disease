@@ -83,6 +83,8 @@ class Man(GameObject):
         self.Pos = position
         self.Velocity = velocity
 
+        self.Updated = True
+
 
     def GetInfect( self, virus ):
         """Get Infect from the infector"""
@@ -112,7 +114,14 @@ class Man(GameObject):
         """Render the man into the screen"""
         posX = int( self.Pos.x )
         posY = int(self.Pos.y)
+
+        #if self.Updated:
+        #    self.DrawingColor = Colors.Green
+        #else:
+        #    self.DrawingColor = Colors.Red
+
         pygame.draw.circle( DisplayScreen.DisplaySurface, self.DrawingColor, ( posX, posY ), int(self.Size) )        
+        self.Updated = False
 
     def Update(self, elapsedTime):
         """Update the man's state"""
@@ -142,3 +151,5 @@ class Man(GameObject):
         if self.Steering.IsPacePartitionOn():
             self.World.CellSpace.UpdateEntity_Blocked( self, oldPos )
             #self.World.CellSpace.UpdateEntity_NoBlock( self, oldPos )
+
+        self.Updated = True

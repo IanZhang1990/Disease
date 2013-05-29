@@ -34,16 +34,14 @@ while True:
              pygame.quit()
              sys.exit()
 
-
     timeInSecond = fpsTimer.tick() / 1000.0 # Get the elapsed time in second
     fpsText = Font.create_text("FPS: " + str( fpsTimer.get_fps() ), DisplayScreen.Font_preferences, 20, (0, 128, 0))
 
-    gameWorld.Update( timeInSecond )
     DISPLAYSURF.fill( backgroundColor )
     DISPLAYSURF.blit(fpsText, ( 0, 0 ))
-
+    gameWorld.Update( timeInSecond )
     gameWorld.Render()
     pygame.display.flip()
-    if( gameWorld.MultiThreadUpdate ):
-        pygame.time.wait( 10 )
+    #if( gameWorld.MultiThreadUpdate ):
+    #    pygame.time.wait( 20 )
     

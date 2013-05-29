@@ -5,14 +5,14 @@ import threading
 import time
 import datetime
 
-
 ##########################################
 ### Thread Manager class
 ##########################################
 
-updateCellCount = 0
+updatedCells = list()
 BeginUpdateEvent = threading.Event()
 UpdateFinishedEvent = threading.Event()
+#global_TimeElapsed = 0.0
 
 class CellThread(threading.Thread): #The timer class is derived from the class threading.Thread  
     def __init__(self, cellSpace ):
@@ -20,7 +20,7 @@ class CellThread(threading.Thread): #The timer class is derived from the class t
         self.thread_stop = False
         self.__timeElapsed__ = 0
         self.cellSpace = cellSpace
-        #self.BeginUpdateEvent = threading.Event()
+        self.LastUpdateTimeStamp = time.clock()
 
     def __del__( self ):
         self.Stop()
@@ -28,29 +28,36 @@ class CellThread(threading.Thread): #The timer class is derived from the class t
 
     def run(self): #Overwrite run() method, put what you want the thread do here  
         while not self.thread_stop:
-            BeginUpdateEvent.wait()
-            global updateCellCount
-            
-            if( updateCellCount < ThreadManager.totalThreadCount ):
-                # Update each member in the cell
-                for man in self.cellSpace.Members:
-                    man.Update( self.__timeElapsed__ )
+            global updatedCells
+            #BeginUpdateEvent.wait()
+            #time.sleep( 0.02 )
 
+            try:
+            #    idx = updatedCells.index( self )
+            #except ValueError:
+                # Update each member in the cell
+                currentTime = time.clock()
+                self.__timeElapsed__ = (currentTime - self.LastUpdateTimeStamp)
+                self.LastUpdateTimeStamp = currentTime
+                #print self.__timeElapsed__
+                for man in self.cellSpace.Members:
+                    #self.__timeElapsed__ = global_TimeElapsed
+                    man.Update( self.__timeElapsed__ )
                 #ThreadManager.postUpdateQueue.put_nowait( (self.thread_name, "_VALUE") )
-                updateCellCount = updateCellCount + 1
-            if updateCellCount >= ThreadManager.totalThreadCount:
-                UpdateFinishedEvent.set() 
-                BeginUpdateEvent.clear()
+                #updatedCells.append( self )
+                self.__timeElapsed__ = 0
                 pass
-            
-            self.__timeElapsed__ = 0
+            finally:
+                #if len( updatedCells )  >= ThreadManager.totalThreadCount :
+                #    UpdateFinishedEvent.set()
+                #    BeginUpdateEvent.clear()
+                pass
 
     def Stop(self):
         self.thread_stop = True
 
     def Update( self, timeElapsed ):
         self.__timeElapsed__ = self.__timeElapsed__ + timeElapsed;
-        #self.BeginUpdateEvent.set()
         
 
 class ThreadManager:
@@ -73,20 +80,32 @@ class ThreadManager:
             cellthread.start()
 
     def __del__(self):
+        for cellthread in self.threadPool:
+            cellthread.Stop()   
         pass
 
     def Update( self, timeElapsed ):
-        global updateCellCount
-        updateCellCount = 0
+        global updatedCells
+        global BeginUpdateFlag
+        global global_TimeElapsed
+            
 
         # 1. update threads will give some job to this thread
-        for cellthread in self.threadPool:
-            cellthread.Update( timeElapsed )
-        BeginUpdateEvent.set()
+        #BeginUpdateEvent.set()
+        #for cellthread in self.threadPool:
+        #    cellthread.Update( timeElapsed )        
 
+ 
         # 2. wait for all the update threads finish their jobs
-        UpdateFinishedEvent.wait()
+        #UpdateFinishedEvent.wait()
+        #while len(updatedCells) < self.totalThreadCount:
+        #    time.sleep( 0.030 )
 
+        #continue
+        #BeginUpdateEvent.clear()
+        #updatedCells = list()
+
+        #print "process"
         # 3. post process the postUpdateDict
         while True:
             try:
@@ -94,5 +113,5 @@ class ThreadManager:
                 self.CellsSpace.UpdateEntity_NoBlock( tuple[0], tuple[1] )
             except:
                 break
-        ThreadManager.postUpdateQueue = Queue()
-        UpdateFinishedEvent.clear()
+        #ThreadManager.postUpdateQueue = Queue()
+        #UpdateFinishedEvent.clear()

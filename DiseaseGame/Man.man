@@ -2,6 +2,6 @@
 AgentNumber       = 300
 Mass              = 1.0
 Size		  = 5
-MaxForce	  = 150.0
-MaxSpeed          = 40.0
-ViewDistance      = 50.0
+MaxForce	  = 100.0
+MaxSpeed          = 13.0
+ViewDistance      = 30.0

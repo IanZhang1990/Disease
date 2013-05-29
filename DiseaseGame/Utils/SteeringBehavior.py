@@ -99,12 +99,14 @@ class SteeringBehavior(object):
             # Tag neighbors
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
-                self.Owener.World.TagEntitiesWithinViewRange( self.Owener, self.ViewDistance )
+                #self.Owener.World.TagEntitiesWithinViewRange( self.Owener, self.ViewDistance )
+                pass
         else:
             # calculate neighbours in cell-space
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
-                self.Owener.World.CellSpace.CalculateNeighbors( self.Owener.Pos, self.ViewDistance )
+                #self.Owener.World.CellSpace.CalculateNeighbors( self.Owener.Pos, self.ViewDistance )
+                pass
 
         if self.SummingMethod == SummingMethod.WEIGHTED_AVG:
             self.SteeringForce = self.CalculateWeightedSum()

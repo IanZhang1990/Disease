@@ -36,8 +36,8 @@ class GameWorld(object):
 
     ManPath = None                     # any path we may create for the men to follow
 
-    CellsX = 2
-    CellsY = 1
+    CellsX = 5
+    CellsY = 4
 
     MultiThreadUpdate = True
 
@@ -50,7 +50,8 @@ class GameWorld(object):
         # Set up space partitions
         self.CellSpace = SpacePartition( self.WorldWidth, self.WorldHeight, self.CellsX, self.CellsY, 500, self ) # 4 x 3 space partition, with at most 500 agents in it
 
-        self.CellThreadManagement = ThreadManagement.ThreadManager( self.CellSpace )
+        if( self.MultiThreadUpdate ):
+            self.CellThreadManagement = ThreadManagement.ThreadManager( self.CellSpace )
 
         # Set up cities
 
