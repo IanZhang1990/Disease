@@ -104,7 +104,6 @@ class SteeringBehavior(object):
             # calculate neighbours in cell-space
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
-                
                 self.Owener.World.CellSpace.CalculateNeighbors( self.Owener.Pos, self.ViewDistance )
 
         if self.SummingMethod == SummingMethod.WEIGHTED_AVG:

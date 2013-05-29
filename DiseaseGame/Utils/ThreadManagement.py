@@ -12,7 +12,7 @@ import datetime
 
 updateCellCount = 0
 BeginUpdateEvent = threading.Event()
-#UpdateFinishedEvent = threading.Event()
+UpdateFinishedEvent = threading.Event()
 
 class CellThread(threading.Thread): #The timer class is derived from the class threading.Thread  
     def __init__(self, cellSpace ):
@@ -33,14 +33,13 @@ class CellThread(threading.Thread): #The timer class is derived from the class t
             
             if( updateCellCount < ThreadManager.totalThreadCount ):
                 # Update each member in the cell
-                #print str(len(self.cellSpace.Members)) + " members"
                 for man in self.cellSpace.Members:
                     man.Update( self.__timeElapsed__ )
 
                 #ThreadManager.postUpdateQueue.put_nowait( (self.thread_name, "_VALUE") )
                 updateCellCount = updateCellCount + 1
             if updateCellCount >= ThreadManager.totalThreadCount:
-                #UpdateFinishedEvent.set() 
+                UpdateFinishedEvent.set() 
                 BeginUpdateEvent.clear()
                 pass
             
@@ -83,13 +82,11 @@ class ThreadManager:
         # 1. update threads will give some job to this thread
         for cellthread in self.threadPool:
             cellthread.Update( timeElapsed )
-            #print len(cellthread.cellSpace.Members)
         BeginUpdateEvent.set()
 
-        #print "wait"
         # 2. wait for all the update threads finish their jobs
-        #UpdateFinishedEvent.wait()
-        #print "post process"
+        UpdateFinishedEvent.wait()
+
         # 3. post process the postUpdateDict
         while True:
             try:
@@ -98,4 +95,4 @@ class ThreadManager:
             except:
                 break
         ThreadManager.postUpdateQueue = Queue()
-        #UpdateFinishedEvent.clear()
+        UpdateFinishedEvent.clear()
