@@ -1,14 +1,16 @@
 #=====================================================================================
+# Filename: SteeringBehavior.py
+# Author: Ian Zhang
+# Description: This file defines steering behavior related classes
+#=====================================================================================
 from Utils.FileOperation import ParameterLoader
 import random
 import math
 from Utils.Path import Path
 from Math.Vector import Vector2D
 from Math import Math2D
-# Filename: SteeringBehavior.py
-# Author: Ian Zhang
-# Description: This file defines steering behavior related classes
-#=====================================================================================
+from Game import GameObject
+
 
 class SteeringParmLoader( ParameterLoader ):
 
@@ -99,13 +101,13 @@ class SteeringBehavior(object):
             # Tag neighbors
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
-                #self.Owener.World.TagEntitiesWithinViewRange( self.Owener, self.ViewDistance )
+                self.Owener.World.TagEntitiesWithinViewRange( self.Owener, self.ViewDistance )
                 pass
         else:
             # calculate neighbours in cell-space
             if self.On( BehaviorType.SEPARATION ) or self.On( BehaviorType.ALLIGNMENT ) or self.On(BehaviorType.COHESION):
                 # Tag Neighbors
-                #self.Owener.World.CellSpace.CalculateNeighbors( self.Owener.Pos, self.ViewDistance )
+                self.Owener.World.CellSpace.CalculateNeighbors( self.Owener.Pos, self.ViewDistance )
                 pass
 
         if self.SummingMethod == SummingMethod.WEIGHTED_AVG:
@@ -170,19 +172,50 @@ class SteeringBehavior(object):
         return self.SteeringForce
 
 
+###############################################
+###                                Behaviors
+############################################### 
+
     def WallAvoidance( self ):
         # TODO: FInish the code
         pass
     def ObstacleAvoidance(self):
         # TODO: FInish the code
         pass
-    def Evade( self ):
-        # TODO: FInish the code
-        pass
 
+    def Seek( self, targetPos ):
+        """Giving a target the method returns a steering force point towards the target"""
+        if not isinstance( targetPos, Vector2D ):
+            return
+        desireVelo = (targetPos - self.Owener.Pos).normalized() * self.Owener.MaxSpeed
+        return desireVelo - self.Owener.Velocity;
+
+    def Flee( self, targetPos ):
+        """Giving a target the method returns a steering force point against the target"""
+        if not isinstance( targetPos, Vector2D ):
+            return
+        desireVelo = (self.Owener.Pos - targetPos).normalized() * self.Owener.MaxSpeed
+        return desireVelo - self.Owener.Velocity;
+
+    def Evade( self, pursuer ):
+        """Flees from the estimated future position of the pursuer"""
+        if not isinstance( pursuer, GameObject ):
+            return
+        toPursuer = pursuer.Pos - self.Owener.Pos
+        ThreadRange = 100.0 #######################################################  TODO: Please make this a parameter
+        if toPursuer.get_length_sqrd() > ThreadRange * ThreadRange:
+            return Vector2D( 0, 0 )
+        
+        # the lookahead time is propotional to the distance between the pursuer
+        # and the pursuer; and is inversely proportional to the sum of the
+        # agents' velocities
+        lookAheadTime = toPursuer.get_length() / ( self.Owener.MaxSpeed + pursuer.Velocity.get_length() )
+
+        # now flee away from predicted future position of the pursuer
+        return self.Flee(pursuer.Pos + pursuer.Velocity * lookAheadTime);
 
     def Wander( self ):
-        """Man a man wander randomly in the world"""
+        """Man wanders randomly in the world"""
         # This behavior is dependent on the update rate, so this line must be included when using time independent framerate.
         jitterThisTimeSlice = self.WanderJitter * self.Owener.ElaplsedTime
 
@@ -206,7 +239,11 @@ class SteeringBehavior(object):
         # and steer towards it
         return targetInWorld - self.Owener.Pos
 
+
+
 ######################################################################################
+
+
     def SetTarget( self, targetPos ):
         self.Target = targetPos
 
@@ -228,10 +265,53 @@ class SteeringBehavior(object):
     def SetSummingMethod( self, method ):
         self.SummingMethod = method
 
+#########################################
+###              Switchs
+#########################################
+
+    def On( self, behavior ):
+        return self.iFlags&behavior == behavior
+
     def WanderOn( self ):
         self.iFlags = self.iFlags | BehaviorType.WANDER
     def WanderOff( self ):
         self.iFlags = self.iFlags ^ BehaviorType.WANDER
 
-    def On( self, behavior ):
-        return self.iFlags&behavior == behavior
+    def SeekOn( self ):
+        self.iFlags = self.iFlags | BehaviorType.SEEK
+    def SeekOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.SEEK
+
+    def FleeOn( self ):
+        self.iFlags = self.iFlags | BehaviorType.FLEE
+    def FleeOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.FLEE
+
+    def EvadeOn( self, target ):
+        self.iFlags = self.iFlags | BehaviorType.EVADE
+        if isinstance( target, GameObject ):
+            self.TargetAgent1 = target
+    def EvadeOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.EVADE
+
+    def CohesionOn( self ):
+        self.iFlags = self.iFlags | BehaviorType.COHESION
+    def CohesionOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.COHESION
+
+    def PursuitOn( self, target ):
+        self.iFlags = self.iFlags | BehaviorType.PURSUIT
+        if isinstance( target, GameObject ):
+            self.TargetAgent1 = target
+    def PursuitOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.PURSUIT
+
+    def ArriveOn( self ):
+        self.iFlags = self.iFlags | BehaviorType.ARRIVE
+    def ArriveOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.ARRIVE
+
+    def AlignmentOn( self ):
+        self.iFlags = self.iFlags | BehaviorType.ALLIGNMENT
+    def AlignmentOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.ALLIGNMENT
