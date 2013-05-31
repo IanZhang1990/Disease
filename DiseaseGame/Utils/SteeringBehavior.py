@@ -185,6 +185,7 @@ class SteeringBehavior(object):
     def WallAvoidance( self ):
         # TODO: FInish the code
         pass
+
     def ObstacleAvoidance(self):
         # TODO: FInish the code
         pass
@@ -284,6 +285,39 @@ class SteeringBehavior(object):
 
         return Vector2D( 0, 0 )
         pass
+
+#----------------- Group Behaviors ----------------
+    def Cohesion( self, neighbors ):
+        """returns a steering force that attempts to move the agent towards the
+            center of mass of the agents in its immediate area.
+            USES SPACIAL PARTITIONING"""
+        if not isinstance( neighbors, list ):
+            return
+        # first find the center of mass of all the agents
+        centerOfMass = Vector2D( 0, 0 )
+        steeringForce = Vector2D( 0, 0 )
+
+        # iterate through the neighbors and sum up all the position vectors
+        neighborCount = 0
+        entity = self.Owener.World.CellSpace.FirstNeighbor()
+        while not self.Owener.World.CellSpace.EndNeighbor():
+            if entity != self.Owener:
+                centerOfMass = centerOfMass + entity.Pos
+                neighborCount = neightborCount + 1
+                pass
+            entity = self.Owener.World.CellSpace.NextNeighbor()
+            pass
+
+        if neighborCount > 0:
+            centerOfMass = centerOfMass / float( neighborCount )
+            # now seek towards that position
+            steeringForce = self.Seek( centerOfMass )
+            pass
+
+        # the magnitude of cohesion is usually much larger than separation or
+        # allignment so it usually helps to normalize it.
+        return steeringForce.normalized()
+
 
 ######################################################################################
 
