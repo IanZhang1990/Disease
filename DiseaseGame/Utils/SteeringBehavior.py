@@ -318,6 +318,28 @@ class SteeringBehavior(object):
         # allignment so it usually helps to normalize it.
         return steeringForce.normalized()
 
+    def Alignment( self, neighbors ):
+        """returns a force that attempts to align this agents heading with that
+            of its neighbors
+            USES SPACIAL PARTITIONING"""
+        avgHeading = Vector2D( 0, 0 )
+        neighborCount = 0
+        entity = self.Owener.World.CellSpace.FirstNeighbor()
+        while not self.Owener.World.CellSpace.EndNeighbor():
+            if entity != self.Owener:
+                avgHeading = avgHeading + entity.Heading
+                neighborCount = neightborCount + 1
+                pass
+            entity = self.Owener.World.CellSpace.NextNeighbor()
+            pass
+        # if the neighborhood contained one or more vehicles, average their
+        # heading vectors.
+        if neighborCount > 0:
+            avgHeading = avgHeading / float(neighborCount)
+            avgHeading = avgHeading - self.Owener.Heading
+            pass
+        return avgHeading
+
 
 ######################################################################################
 
