@@ -199,7 +199,7 @@ class SteeringBehavior(object):
 
     def Evade( self, pursuer ):
         """Flees from the estimated future position of the pursuer"""
-        if not isinstance( pursuer, GameObject ):
+        if not isinstance( pursuer, Game.Man.Man ):
             return
         toPursuer = pursuer.Pos - self.Owener.Pos
         ThreadRange = 100.0 #######################################################  TODO: Please make this a parameter
@@ -239,7 +239,27 @@ class SteeringBehavior(object):
         # and steer towards it
         return targetInWorld - self.Owener.Pos
 
+    def Pursuit( self, evader ):
+        """Pursuit a target"""
+        if not isinstance( evader, Game.Man.Man ):
+            return
 
+        # if the evader is ahead and facing the agent then we can just seek
+        # for the evader's current position.
+        toEvader = evader.Pos - self.Owener.Pos
+        relativeHeading = self.Owener.Heading.dot( evader.Heading )
+        
+        if toEvader.dot( self.Owener.Heading ) > 0 and relativeHeading < -0.95: # acos( -0.95 ) = 18 degrees
+            return self.Seek( evader.Pos )
+
+        # Not ahead
+        # the lookahead time is propotional to the distance between the evader
+        # and the pursuer; and is inversely proportional to the sum of the
+        # agent's velocities
+        lookAheadTime = toEvader.get_length() / ( self.Owener.MaxSpeed + evader.Velocity.get_length() )
+
+        # now seek to the predicted future position of the evader
+        return self.Seek(evader.Pos + evader.Velocity * lookAheadTime);
 
 ######################################################################################
 

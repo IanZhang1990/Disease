@@ -21,7 +21,6 @@ class GameObject(object):
         self.Heading = Vector2D( 0, 0 )
         self.MaxTurnRate = 1.0
         self.Mass = 1.0
-        self.Velocity = Vector2D( 0, 0 )
 
 
         if position is not None and isinstance( position, Vector2D ):
