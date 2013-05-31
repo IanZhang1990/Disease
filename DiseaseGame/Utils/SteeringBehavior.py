@@ -43,15 +43,19 @@ class BehaviorType:
     FLOCK              = 0x08000
     OFFSET_PURSUIT     = 0x10000
 
+class ArriveMode:
+    """Arrive makes use of these to determine how quickly a vehicle should decelerate to its target"""
+    SLOW = 3
+    NORMAL = 2
+    FAST = 1
+
 class SummingMethod:
     WEIGHTED_AVG = 0
     PRIORITIZED = 1
     DITHERED = 2
 
 class SteeringBehavior(object):
-    """Steering Behavior"""
-
-    
+    """Steering Behavior"""    
 
     def __init__( self, owener, parmLoader ):
         self.Owener = owener
@@ -73,6 +77,8 @@ class SteeringBehavior(object):
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
         self.CellSpaceOn = True
         self.SummingMethod = SummingMethod.WEIGHTED_AVG;
+        #Arrive makes use of these to determine how quickly a vehicle should decelerate to its target
+        self.ArriveMode = ArriveMode.NORMAL                                                      # By default, the arrive mode is normal
 
         self.WanderWeight = float(parmLoader.Parameters.get('WanderWeight', 1.0))
 
@@ -260,6 +266,24 @@ class SteeringBehavior(object):
 
         # now seek to the predicted future position of the evader
         return self.Seek(evader.Pos + evader.Velocity * lookAheadTime);
+
+    def Arrive( self, targetPos, arriveMode ):
+        """ it attempts to arrive at the target with a zero velocity"""
+        if not isinstance( targetPos, Vector2D ) or not isinstance( arriveMode, ArriveMode ):
+            return
+
+        toTarget = targetPos - self.Owener.Pos
+        dist = toTarget.get_length()
+
+        if dist > 0:
+            arriveModeTweaker = 0.3
+            speed = dist / ( float(self.ArriveMode) * arriveModeTweaker )
+            speed = min( [ speed, self.Owener.MaxSpeed ] )
+            desiredVelocity = toTarget * speed / dist
+            return ( desiredVelocity - self.Owener.Velocity )
+
+        return Vector2D( 0, 0 )
+        pass
 
 ######################################################################################
 
