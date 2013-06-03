@@ -16,6 +16,7 @@ import random
 from Game.CellSpace import SpacePartition
 from Game.GameObject import GameObject
 from Utils import ThreadManagement
+from Game.Urban import Building, City
 
 
 class GameWorld(object):
@@ -33,6 +34,7 @@ class GameWorld(object):
     Doctors = list()                     # a container of all doctors
     Cities = list()                        # a container of all cities
     CellSpace = None                 # Cell SpacePartition.
+    Buildings = list()                   # All buildings
 
     ManPath = None                     # any path we may create for the men to follow
 
@@ -54,6 +56,15 @@ class GameWorld(object):
             self.CellThreadManagement = ThreadManagement.ThreadManager( self.CellSpace )
 
         # Set up cities
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!########################### 
+        #This is for test only
+        newCity = City( Vector2D(self.WorldWidth / 2.0, self.WorldHeight / 2.0 ) )
+        self.Cities.append( newCity )
+
+        newBuilding = Building( Vector2D(600, 400), 40 )
+        newBuilding.IsObstacle = True
+        newCity.AddBuilding( newBuilding )
+        ##############################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --------------------- End Test 
 
         # Set up roads
 
@@ -115,5 +126,10 @@ class GameWorld(object):
         GameObject.TagNeighbors( entity, self.People, range )
         pass
 
-
-
+    def TagObstaclesWithinViewRange( self, entity, range ):
+        ObstBuilding = list()
+        for building in self.Buildings:
+            if building.IsObstacle:
+                ObstBuilding.append( building )
+        GameObject.TagNeighbors( entity, ObstBuilding, range )
+        pass

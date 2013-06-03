@@ -10,6 +10,7 @@ from Utils.Path import Path
 from Math.Vector import Vector2D
 from Math import Math2D
 from Game import GameObject
+import Math
 
 
 class SteeringParmLoader( ParameterLoader ):
@@ -58,6 +59,8 @@ class SteeringBehavior(object):
     """Steering Behavior"""    
 
     def __init__( self, owener, parmLoader ):
+        if not isinstance( parmLoader, SteeringParmLoader ):
+            return
         self.Owener = owener
         self.Path = None
         self.SteeringForce = Vector2D(0, 0)
@@ -69,6 +72,7 @@ class SteeringBehavior(object):
         self.Target = None       # The current target
 
         self.DBoxLength = float(parmLoader.Parameters.get('MinDetectionBoxLength', 40.0))        # length of the 'detection box' utilized in obstacle avoidance
+        self.DBoxLength_RawValue = self.DBoxLength
         self.ViewDistance = self.Owener.ViewDistance                                                # how far the agent can 'see'
         self.WanderDistance = 2.0
         self.WanderJitter = 80.0
@@ -186,8 +190,68 @@ class SteeringBehavior(object):
         # TODO: FInish the code
         pass
 
-    def ObstacleAvoidance(self):
-        # TODO: FInish the code
+    def ObstacleAvoidance(self, obstacleList):
+        """this returns a steering force which will attempt to keep the agent 
+            away from any obstacles it may encounter"""
+        if not isinstance( obstacleList, list ):
+            return 
+        #the detection box length is proportional to the agent's velocity
+        self.DBoxLength = self.DBoxLength_RawValue + self.Owener.Velocity.get_length() / self.Owener.MaxSpeed() *self.DBoxLength_RawValue
+        #tag all obstacles within range of the box for processing
+        self.Owener.World.TagObstaclesWithinViewRange( self.Owener, self.DBoxLength )
+        
+        ClosestIntersectingObstacle = None                  # keep track of the closest intersecting obstacle (CIB)
+        DistToClosestIP = 10000000000000.0             # track the distance to the CIB
+        LocalPosOfClosestObstacle = Vector2D( 0, 0 )   # the transformed local coordinates of the CIB
+
+        for obstacle in obstacleList:
+            if obstacle.IsTagged():
+                localPos = Math.Math2D.Transformations.PointToLocalSpace( obstacle.Pos, self.Owener.Heading, self.Owener.Side, self.Owener.Pos )
+                # if the local position has a negative x value then it must lay
+                # behind the agent. (in which case it can be ignored)
+                if localPos.x > 0:
+                    # if the distance from the x axis to the object's position is less
+                    # than its radius + half the width of the detection box then there
+                    # is a potential intersection.
+                    expandedRadius = obstacle.BoundingRadius + self.Owener.BoundingRadius
+                    if math.fabs( localPos.y ) < expandedRadius:
+                        # now to do a line/circle intersection test. The center of the 
+                        # circle is represented by (cX, cY). The intersection points are 
+                        # given by the formula x = cX +/-sqrt(r^2-cY^2) for y=0. 
+                        # We only need to look at the smallest positive value of x because
+                        # that will be the closest point of intersection.
+                        cx = localPos.x
+                        cy = localPos.y
+                        # we only need to calculate the sqrt part of the above equation once
+                        sqrtPart = math.sqrt( expandedRadius * expandedRadius - cy * cy )
+                        ip = cx - sqrtPart
+                        if ip <= 0.0:
+                            ip = cx + sqrtPart
+                            pass
+                        # test to see if this is the closest so far. If it is keep a
+                        # record of the obstacle and its local coordinates
+                        if ip < DistToClosestIP:
+                            DistToClosestIP = ip
+                            ClosestIntersectingObstacle = obstacle
+                            LocalPosOfClosestObstacle = localPos
+                            pass
+                        pass
+                    pass
+                pass
+            pass
+
+        # if we have found an intersecting obstacle, calculate a steering force away from it
+        steeringForce = Vector2D( 0, 0 )
+
+        if ClosestIntersectingObstacle is not None:
+            # the closer the agent is to an object, the stronger the steering force should be
+            multiplier = 1.0 + (self.DBoxLength - LocalPosOfClosestObstacle.x) / self.DBoxLength;
+            steeringForce.y = ( ClosestIntersectingObstacle.BoundingRadius - LocalPosOfClosestObstacle.y ) * multiplier ################################## Something you can add here 
+            brakingWeight = 0.2
+            steeringForce.x = ( ClosestIntersectingObstacle.BoundingRadius - LocalPosOfClosestObstacle.x ) * brakingWeight ################################## Something you can add here 
+            pass
+
+        return Math.Math2D.Transformations.VectorToWorldSpace( steeringForce, self.Owener.Heading, self.Owener.Side )
         pass
 
     def Seek( self, targetPos ):
@@ -341,6 +405,8 @@ class SteeringBehavior(object):
         return avgHeading
 
 
+
+
 ######################################################################################
 
 
@@ -394,11 +460,6 @@ class SteeringBehavior(object):
     def EvadeOff( self ):
         self.iFlags = self.iFlags ^ BehaviorType.EVADE
 
-    def CohesionOn( self ):
-        self.iFlags = self.iFlags | BehaviorType.COHESION
-    def CohesionOff( self ):
-        self.iFlags = self.iFlags ^ BehaviorType.COHESION
-
     def PursuitOn( self, target ):
         self.iFlags = self.iFlags | BehaviorType.PURSUIT
         if isinstance( target, GameObject ):
@@ -411,7 +472,28 @@ class SteeringBehavior(object):
     def ArriveOff( self ):
         self.iFlags = self.iFlags ^ BehaviorType.ARRIVE
 
+    def ObstacleAvoidanceOn(self):
+        self.iFlags = self.iFlags | BehaviorType.OBSTACLE_AVOID
+    def ObstacleAvoidanceOff(self):
+        self.iFlags = self.iFlags ^ BehaviorType.OBSTACLE_AVOID
+
+    def FollowPathOn( self ):
+        self.iFlags = self.iFlags | BehaviorType.FOLLOW_PATH
+    def FollowPathOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.FOLLOW_PATH
+
+    # -------------- Group Behavior --------------------
     def AlignmentOn( self ):
         self.iFlags = self.iFlags | BehaviorType.ALLIGNMENT
     def AlignmentOff( self ):
         self.iFlags = self.iFlags ^ BehaviorType.ALLIGNMENT
+
+    def SeparationOn(self):
+        self.iFlags = self.iFlags | BehaviorType.SEPARATION
+    def SeparationOff(self):
+        self.iFlags = self.iFlags ^ BehaviorType.SEPARATION
+
+    def CohesionOn( self ):
+        self.iFlags = self.iFlags | BehaviorType.COHESION
+    def CohesionOff( self ):
+        self.iFlags = self.iFlags ^ BehaviorType.COHESION
