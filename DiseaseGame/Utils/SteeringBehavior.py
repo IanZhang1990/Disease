@@ -350,6 +350,14 @@ class SteeringBehavior(object):
         return Vector2D( 0, 0 )
         pass
 
+    def FollowPath( self ):
+        if( self.Path.CurrWayPoint - self.Owener.Pos ).get_length_sqrd() < self.WaypointSeekDistSq:
+            self.Path.SetNextWaypoint()
+        if self.Path.Finished:
+            return self.Seek( self.Path.CurrWayPoint )
+        else:
+            return self.Arrive( self.Path.CurrWayPoint, ArriveMode.NORMAL )
+
 #----------------- Group Behaviors ----------------
     def Cohesion( self, neighbors ):
         """returns a steering force that attempts to move the agent towards the
