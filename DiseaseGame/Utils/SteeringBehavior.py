@@ -351,12 +351,17 @@ class SteeringBehavior(object):
         pass
 
     def FollowPath( self ):
+        """given a series of Vector2Ds, this method produces a force that will
+            move the agent along the waypoints in order"""
         if( self.Path.CurrWayPoint - self.Owener.Pos ).get_length_sqrd() < self.WaypointSeekDistSq:
             self.Path.SetNextWaypoint()
         if self.Path.Finished:
             return self.Seek( self.Path.CurrWayPoint )
         else:
             return self.Arrive( self.Path.CurrWayPoint, ArriveMode.NORMAL )
+        pass
+
+
 
 #----------------- Group Behaviors ----------------
     def Cohesion( self, neighbors ):
@@ -412,8 +417,20 @@ class SteeringBehavior(object):
             pass
         return avgHeading
 
-
-
+    def Separation( self, neighbors ):
+        """this calculates a force repelling from the other neighbors
+        USES SPACIAL PARTITIONING"""
+        steeringForce = Vector2D( 0, 0 )
+        neighborCount = 0
+        entity = self.Owener.World.CellSpace.FirstNeighbor()
+        while not self.Owener.World.CellSpace.EndNeighbor():
+            if entity != self.Owener:
+                toAgent = self.Owener.Pos - entity.Pos
+                steeringForce = steeringForce + toAgent.normalized() / toAgent.get_length()
+                pass
+            entity = self.Owener.World.CellSpace.NextNeighbor()
+            pass
+        return steeringForce
 
 ######################################################################################
 
