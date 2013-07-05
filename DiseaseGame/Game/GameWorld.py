@@ -17,6 +17,7 @@ from Game.CellSpace import SpacePartition
 from Game.GameObject import GameObject
 from Utils import ThreadManagement
 from Game.Urban import Building, City
+import Game
 
 
 class GameWorld(object):
@@ -41,7 +42,7 @@ class GameWorld(object):
     CellsX = 5
     CellsY = 4
 
-    MultiThreadUpdate = True
+    MultiThreadUpdate = False
 
     def __init__(self):
         self.Pause = False
@@ -64,6 +65,7 @@ class GameWorld(object):
         newBuilding = Building( Vector2D(600, 400), 40 )
         newBuilding.IsObstacle = True
         newCity.AddBuilding( newBuilding )
+        self.Buildings.append( newBuilding )
         ##############################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --------------------- End Test 
 
         # Set up roads
@@ -89,14 +91,14 @@ class GameWorld(object):
         # So... why not try to make this multi-threaded? 
 
         if not self.Pause:
-            for person in self.People:
-                    person.Render()
-            for doctor in self.Doctors:
-                doctor.Render()
             for city in self.Cities:
                 city.Render()
             for cell in self.CellSpace.Cells:
                 cell.Render()
+            for person in self.People:
+                    person.Render()
+            for doctor in self.Doctors:
+                doctor.Render()
     
     def TogglePause(self):
         self.Pause = not self.Pause
@@ -123,7 +125,7 @@ class GameWorld(object):
         pass
 
     def TagEntitiesWithinViewRange( self, entity, range ):
-        GameObject.TagNeighbors( entity, self.People, range )
+        Game.GameObject.ObjectFunctionTemplate.TagNeighbors( entity, self.People, range )
         pass
 
     def TagObstaclesWithinViewRange( self, entity, range ):
@@ -131,5 +133,5 @@ class GameWorld(object):
         for building in self.Buildings:
             if building.IsObstacle:
                 ObstBuilding.append( building )
-        GameObject.TagNeighbors( entity, ObstBuilding, range )
+        Game.GameObject.ObjectFunctionTemplate.TagNeighbors( entity, ObstBuilding, range )
         pass

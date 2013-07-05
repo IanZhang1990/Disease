@@ -96,8 +96,9 @@ class SteeringBehavior(object):
         self.Path = Path()
         self.Path.LoopOn()
 
-        # TODO: REMOVE the next line. it is simple for testing.
+        # TODO: REMOVE the next several lines. There are simply for testing.
         self.WanderOn()
+        self.ObstacleAvoidanceOn()
 
 ######################################################################################
     def Calculate( self ):
@@ -141,7 +142,17 @@ class SteeringBehavior(object):
         if self.On( BehaviorType.WALL_AVOID ):
             self.SteeringForce += self.WallAvoidance()
         if self.On( BehaviorType.OBSTACLE_AVOID ):
-            self.SteeringForce += self.ObstacleAvoidance()
+            obstaclelist = list()
+            for city in self.Owener.World.Cities:
+                for building in city.Buildings:
+                    if building.IsObstacle:
+                        obstaclelist.append( building )
+                        pass
+            avoidForce = self.ObstacleAvoidance( obstaclelist )
+            self.SteeringForce += avoidForce
+            if avoidForce.x > 0 or avoidForce.y > 0:
+                print avoidForce
+
         if self.On( BehaviorType.EVADE ):
             if self.TargetAgent1 is not None:
                 self.SteeringForce += self.Evade()     ##################################### NOT FINISHED IN THIS LINE
@@ -153,6 +164,7 @@ class SteeringBehavior(object):
         if not self.CellSpaceOn:
             if self.On( BehaviorType.SEPARATION ):
                 # TODO: Sepration
+                #self.SteeringForce += self.Separation( self.Owener.World.People ) * 
                 pass
             if self.On( BehaviorType.ALLIGNMENT ):
                 # TODO: Allignment
@@ -196,7 +208,7 @@ class SteeringBehavior(object):
         if not isinstance( obstacleList, list ):
             return 
         #the detection box length is proportional to the agent's velocity
-        self.DBoxLength = self.DBoxLength_RawValue + self.Owener.Velocity.get_length() / self.Owener.MaxSpeed() *self.DBoxLength_RawValue
+        self.DBoxLength = self.DBoxLength_RawValue + self.Owener.Velocity.get_length() / self.Owener.MaxSpeed *self.DBoxLength_RawValue
         #tag all obstacles within range of the box for processing
         self.Owener.World.TagObstaclesWithinViewRange( self.Owener, self.DBoxLength )
         
@@ -209,7 +221,7 @@ class SteeringBehavior(object):
                 localPos = Math.Math2D.Transformations.PointToLocalSpace( obstacle.Pos, self.Owener.Heading, self.Owener.Side, self.Owener.Pos )
                 # if the local position has a negative x value then it must lay
                 # behind the agent. (in which case it can be ignored)
-                if localPos.x > 0:
+                if localPos.x >= 0:
                     # if the distance from the x axis to the object's position is less
                     # than its radius + half the width of the detection box then there
                     # is a potential intersection.

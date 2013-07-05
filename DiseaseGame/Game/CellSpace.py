@@ -12,6 +12,8 @@
 from Math.InvertedAABBox2D import InvertedAABBox2D
 from Math.Vector import Vector2D
 from Utils import ThreadManagement
+from Game.Man import Man
+import Game
 
 
 
@@ -19,6 +21,7 @@ class Cell(object):
     """defines a cell containing a list of pointers to entities"""
     def __init__(self, topLeft, bottomRight):
         self.Members = list()                                # all the entities inhabiting this cell
+        self.Buildings = list()                                # all the buildings located in this cell
         self.AABBox = None                                 # The cell's bouding box.
 
         if isinstance( topLeft, Vector2D ) and isinstance( bottomRight, Vector2D ):
@@ -74,12 +77,28 @@ class SpacePartition:
             @entity: an entity. type: Man"""
         if entity is None:
             return
+        elif not isinstance( entity, Man ):
+            return
 
         if self.NumOfEntities < self.MaxEntities:
             idx = self.PartitionToIndex( entity.Pos )
             self.Cells[idx].Members.append( entity )
             self.NumOfEntities = self.NumOfEntities + 1
         pass
+
+    def AddBuilding( self, building ):
+        """Add a builidng to the class, and find the cell the building located in.
+        Parameters:
+            @building: a building
+        """
+        if not isinstance( building, Game.Urban.Building ):
+            return
+
+        #### TODO: The next several lines should be modified
+        idx = self.PartitionToIndex( building.Pos )         ############################### A building is not a point, so it can be in at most 4 cells 
+        self.Cells[idx].Buildings.append( building )         
+
+
 
     def UpdateEntity_Blocked( self, entity, oldPos ):
         """Update an entity's cell by calling this from the entity's Update() method.

@@ -60,13 +60,14 @@ class GameObject(object):
         self.__tag = True
         pass
     def UnTag( self ):
-        self.__tag = false
+        self.__tag = False
         pass
     def IsTagged( self ):
         return self.__tag
 
 class ObjectFunctionTemplate:
     
+    @staticmethod
     def TagNeighbors( entity, containerOfEntities, radius ):
         """ tags any entities contained in a std container that are within the radius of the single entity parameter"""
         # Iterate through all entities to check for range 

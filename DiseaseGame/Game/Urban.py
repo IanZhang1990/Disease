@@ -1,13 +1,11 @@
 
-
-
-from Game import GameObject
 from Math.Vector import Vector2D
 from GUI.Colors import Colors
 import pygame
 from GUI.DisplayScreen import DisplayScreen
+import Game
 
-class City(GameObject.GameObject):
+class City(Game.GameObject.GameObject):
     """description of class"""
     def __init__( self, centerPosition ):
         self.CenterPos = centerPosition
@@ -27,9 +25,11 @@ class City(GameObject.GameObject):
 class BuildingType:
     CIRCLE = 0
 
-class Building( GameObject.GameObject ):
+class Building( Game.GameObject.GameObject ):
     """description of class"""
     def __init__( self, position, size = 40 ):
+        Game.GameObject.GameObject.__init__( self, position, size, None, None, None, None, None, None )
+        
         self.Size = size
         self.Pos = position
         self.IsObstacle = True
