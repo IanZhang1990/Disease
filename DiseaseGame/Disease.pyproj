@@ -6,7 +6,7 @@
     <ProjectGuid>{2653dca8-d471-46fe-bd24-9b99fd77833c}</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>UnitTest.py</StartupFile>
+    <StartupFile>DiseaseGame.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

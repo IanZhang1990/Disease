@@ -150,8 +150,6 @@ class SteeringBehavior(object):
                         pass
             avoidForce = self.ObstacleAvoidance( obstaclelist )
             self.SteeringForce += avoidForce
-            if avoidForce.x > 0 or avoidForce.y > 0:
-                print avoidForce
 
         if self.On( BehaviorType.EVADE ):
             if self.TargetAgent1 is not None:

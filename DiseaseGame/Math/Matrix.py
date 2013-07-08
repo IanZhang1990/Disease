@@ -32,9 +32,9 @@ class Matrix3x3(object):
 
     def Identity( self ):
         """Make the matrix identity"""
-        self.__00 = 1.0; self.__01 = 0.0; self.__02 = 0.0;
-        self.__10 = 0.0; self.__11 = 1.0; self.__12 = 0.0;
-        self.__20 = 0.0; self.__21 = 0.0; self.__22 = 1.0;
+        self._00 = 1.0; self._01 = 0.0; self._02 = 0.0;
+        self._10 = 0.0; self._11 = 1.0; self._12 = 0.0;
+        self._20 = 0.0; self._21 = 0.0; self._22 = 1.0;
         pass
 
     def __mul__( self, other ):
@@ -45,24 +45,24 @@ class Matrix3x3(object):
             temp = Matrix3x3()
 
             # first row
-            temp.__00 = ( self.__00 * other.__00 ) + ( self.__01 * other.__10 ) + ( self.__02 * other.__20 )
-            temp.__01 = ( self.__00 * other.__01 ) + ( self.__01 * other.__11 ) + ( self.__02 * other.__21 )
-            temp.__02 = ( self.__00 * other.__02 ) + ( self.__01 * other.__12 ) + ( self.__02 * other.__22 )
+            temp._00 = ( self._00 * other._00 ) + ( self._01 * other._10 ) + ( self._02 * other._20 )
+            temp._01 = ( self._00 * other._01 ) + ( self._01 * other._11 ) + ( self._02 * other._21 )
+            temp._02 = ( self._00 * other._02 ) + ( self._01 * other._12 ) + ( self._02 * other._22 )
             # second row
-            temp.__10 = ( self.__10 * other.__00 ) + ( self.__11 * other.__10 ) + ( self.__12 * other.__20 )
-            temp.__11 = ( self.__10 * other.__01 ) + ( self.__11 * other.__11 ) + ( self.__12 * other.__21 )
-            temp.__12 = ( self.__10 * other.__02 ) + ( self.__11 * other.__12 ) + ( self.__12 * other.__22 )
+            temp._10 = ( self._10 * other._00 ) + ( self._11 * other._10 ) + ( self._12 * other._20 )
+            temp._11 = ( self._10 * other._01 ) + ( self._11 * other._11 ) + ( self._12 * other._21 )
+            temp._12 = ( self._10 * other._02 ) + ( self._11 * other._12 ) + ( self._12 * other._22 )
             # third row
-            temp.__20 = ( self.__20 * other.__00 ) + ( self.__21 * other.__10 ) + ( self.__22 * other.__20 )
-            temp.__21 = ( self.__20 * other.__01 ) + ( self.__21 * other.__11 ) + ( self.__22 * other.__21 )
-            temp.__22 = ( self.__20 * other.__02 ) + ( self.__21 * other.__12 ) + ( self.__22 * other.__22 )
+            temp._20 = ( self._20 * other._00 ) + ( self._21 * other._10 ) + ( self._22 * other._20 )
+            temp._21 = ( self._20 * other._01 ) + ( self._21 * other._11 ) + ( self._22 * other._21 )
+            temp._22 = ( self._20 * other._02 ) + ( self._21 * other._12 ) + ( self._22 * other._22 )
 
             return temp
         elif hasattr(other, "__getitem__"): # Multiply a 3-row vector( type: list ) 
             temp2 = [0,0,0]
-            temp2[0] = (self.__00 * other[0]) + (self.__01 * other[1]) + (self.__02 *other[2])
-            temp2[1] = (self.__10 * other[0]) + (self.__11 * other[1]) + (self.__12 *other[2])
-            temp2[2] = (self.__20 * other[0]) + (self.__21 * other[1]) + (self.__22 *other[2])
+            temp2[0] = (self._00 * other[0]) + (self._01 * other[1]) + (self._02 *other[2])
+            temp2[1] = (self._10 * other[0]) + (self._11 * other[1]) + (self._12 *other[2])
+            temp2[2] = (self._20 * other[0]) + (self._21 * other[1]) + (self._22 *other[2])
         else:
             raise TypeError()
     __rmul__ = __mul__
@@ -81,9 +81,9 @@ class Matrix3x3(object):
         """Add another matrix"""
         if isinstance( other, Matrix3x3 ):
             temp = Matrix3x3()
-            temp.__00 = self.__00 + other.__00;     temp.__01 = self.__01 + other.__01;     temp.__01 = self.__01 + other.__01;
-            temp.__10 = self.__10 + other.__10;     temp.__11 = self.__11 + other.__11;     temp.__11 = self.__11 + other.__11;
-            temp.__20 = self.__20 + other.__20;     temp.__21 = self.__21 + other.__21;     temp.__21 = self.__21 + other.__21;
+            temp._00 = self._00 + other._00;     temp._01 = self._01 + other._01;     temp._01 = self._01 + other._01;
+            temp._10 = self._10 + other._10;     temp._11 = self._11 + other._11;     temp._11 = self._11 + other._11;
+            temp._20 = self._20 + other._20;     temp._21 = self._21 + other._21;     temp._21 = self._21 + other._21;
             return temp
         else:
             raise TypeError()
@@ -102,9 +102,9 @@ class Matrix3x3(object):
         """Minus"""
         if isinstance( other, Matrix3x3 ):
             temp = Matrix3x3()
-            temp.__00 = self.__00 - other.__00;     temp.__01 = self.__01 - other.__01;     temp.__01 = self.__01 - other.__01;
-            temp.__10 = self.__10 - other.__10;     temp.__11 = self.__11 - other.__11;     temp.__11 = self.__11 - other.__11;
-            temp.__20 = self.__20 - other.__20;     temp.__21 = self.__21 - other.__21;     temp.__21 = self.__21 - other.__21;
+            temp._00 = self._00 - other._00;     temp._01 = self._01 - other._01;     temp._01 = self._01 - other._01;
+            temp._10 = self._10 - other._10;     temp._11 = self._11 - other._11;     temp._11 = self._11 - other._11;
+            temp._20 = self._20 - other._20;     temp._21 = self._21 - other._21;     temp._21 = self._21 - other._21;
             return temp
         else:
             raise TypeError()
@@ -123,9 +123,9 @@ class Matrix3x3(object):
     def Scale( self, xScale, yScale ):
         """Scale a matrix"""
         temp = Matrix3x3()
-        temp.__00 = xScale; temp.__01 = 0; temp.__02 = 0;
-        temp.__10 = 0.0; temp.__11 = yScale; temp.__12 = 0;
-        temp.__20 = 0.0; temp.__21 = 0; temp.__22 = 1.0;
+        temp._00 = xScale; temp._01 = 0; temp._02 = 0;
+        temp._10 = 0.0; temp._11 = yScale; temp._12 = 0;
+        temp._20 = 0.0; temp._21 = 0; temp._22 = 1.0;
         
         temp2 = self * temp
         #self.__copy( temp2 )
@@ -135,9 +135,9 @@ class Matrix3x3(object):
     def Translate( self, offsetX, offsetY ):
         """Translate current matrix"""
         mat = Matrix3x3()
-        mat.__00 = 1; mat.__01 = 0; mat.__02 = 0;
-        mat.__10 = 0; mat.__11 = 1;  mat.__12 = 0;
-        mat.__20 = offsetX; mat.__21 = offsetY; mat.__22 = 1;
+        mat._00 = 1; mat._01 = 0; mat._02 = 0;
+        mat._10 = 0; mat._11 = 1;  mat._12 = 0;
+        mat._20 = offsetX; mat._21 = offsetY; mat._22 = 1;
         temp = self * mat
         #self.__copy( temp )
         self.__values = (temp.__values)
@@ -150,9 +150,9 @@ class Matrix3x3(object):
         Sin = math.sin( rot )
         Cos = math.cos( rot )
         
-        mat.__00 = Cos;           mat.__01 = Sin;           mat.__02 = 0;
-        mat.__10 = -Sin;          mat.__11 = Cos;        mat.__12 = 0;
-        mat.__20 = 0;              mat.__21 = 0;              mat.__22 = 1;
+        mat._00 = Cos;           mat._01 = Sin;           mat._02 = 0;
+        mat._10 = -Sin;          mat._11 = Cos;        mat._12 = 0;
+        mat._20 = 0;              mat._21 = 0;              mat._22 = 1;
         temp = self * mat
         #self.__copy( temp )
         self.__values = (temp.__values)
@@ -161,9 +161,9 @@ class Matrix3x3(object):
         """Rotate the matrix with two vectors"""
         if isinstance( forward, Vector2D ) and isinstance( side, Vector2D ):
             mat = Matrix3x3()
-            mat.__00 = forward.x; mat.__01 = forward.y; mat.__02 = 0;
-            mat.__10 = side.x;        mat.__11 = side.y;        mat.__12 = 0;
-            mat.__20 = 0;              mat.__21 = 0;              mat.__22 = 1;
+            mat._00 = forward.x; mat._01 = forward.y; mat._02 = 0;
+            mat._10 = side.x;        mat._11 = side.y;        mat._12 = 0;
+            mat._20 = 0;              mat._21 = 0;              mat._22 = 1;
             temp = self * mat
             #self.__copy( temp )
             self.__values = (temp.__values)
@@ -175,115 +175,115 @@ class Matrix3x3(object):
         """applies a 2D transformation matrix to a list of Vector2Ds"""
         if isinstance( vectorList, list ):
             for vector in vectorList:
-                tempX = ( self.__00 * vector.x ) + ( self.__10 * vector.y ) + self.__20
-                tempY = ( self.__01 * vector.x ) + ( self.__11 * vector.y ) + self.__21
+                tempX = ( self._00 * vector.x ) + ( self._10 * vector.y ) + self._20
+                tempY = ( self._01 * vector.x ) + ( self._11 * vector.y ) + self._21
                 vector.x = tempX
                 vector.y = tempY
 
     def TransformVector2D( self, vector2d ):
         """applies a 2D transformation matrix to a Vector2D instance"""
         if isinstance( vector2d, Vector2D ):
-            tempX = ( self.__00 * vector2d.x ) + ( self.__10 * vector2d.y ) + self.__20
-            tempY = ( self.__01 * vector2d.x ) + ( self.__11 * vector2d.y ) + self.__21
+            tempX = ( self._00 * vector2d.x ) + ( self._10 * vector2d.y ) + self._20
+            tempY = ( self._01 * vector2d.x ) + ( self._11 * vector2d.y ) + self._21
             vector2d.x = tempX
             vector2d.y = tempY
 
     def __copy( self, other ):
         if isinstance( other, Matrix3x3 ):
-            self.__00 = other.__00; self.__01 = other.__01; self.__02 = other.__02;
-            self.__10 = other.__10; self.__11 = other.__11; self.__12 = other.__12;
-            self.__20 = other.__20; self.__21 = other.__21; self.__22 = other.__22;
+            self._00 = other._00; self._01 = other._01; self._02 = other._02;
+            self._10 = other._10; self._11 = other._11; self._12 = other._12;
+            self._20 = other._20; self._21 = other._21; self._22 = other._22;
 
             
     ##############
     ### Define Properties
     @property
-    def __00( self ):
+    def _00( self ):
         return self.__values[0][0]
-    @__00.setter
-    def __00( self, value ):
+    @_00.setter
+    def _00( self, value ):
         self.__values[0][0] = value
-    @__00.deleter
-    def __00( self ):
+    @_00.deleter
+    def _00( self ):
         pass
 
     @property
-    def __01( self ):
+    def _01( self ):
         return self.__values[0][1]
-    @__01.setter
-    def __01( self, value ):
+    @_01.setter
+    def _01( self, value ):
         self.__values[0][1] = value
-    @__01.deleter
-    def __01( self ):
+    @_01.deleter
+    def _01( self ):
         pass
 
     @property
-    def __02( self ):
+    def _02( self ):
         return self.__values[0][2]
-    @__02.setter
-    def __02( self, value ):
+    @_02.setter
+    def _02( self, value ):
         self.__values[0][2] = value
-    @__02.deleter
-    def __02( self ):
+    @_02.deleter
+    def _02( self ):
         pass
 
     @property
-    def __10( self ):
+    def _10( self ):
         return self.__values[1][0]
-    @__10.setter
-    def __10( self, value ):
+    @_10.setter
+    def _10( self, value ):
         self.__values[1][0] = value
-    @__10.deleter
-    def __10( self ):
+    @_10.deleter
+    def _10( self ):
         pass
 
     @property
-    def __11( self ):
+    def _11( self ):
         return self.__values[1][1]
-    @__11.setter
-    def __11( self, value ):
+    @_11.setter
+    def _11( self, value ):
         self.__values[1][1] = value
-    @__11.deleter
-    def __11( self ):
+    @_11.deleter
+    def _11( self ):
         pass
 
     @property
-    def __12( self ):
+    def _12( self ):
         return self.__values[1][2]
-    @__12.setter
-    def __12( self, value ):
+    @_12.setter
+    def _12( self, value ):
         self.__values[1][2] = value
-    @__12.deleter
-    def __12( self ):
+    @_12.deleter
+    def _12( self ):
         pass
 
     @property
-    def __20( self ):
+    def _20( self ):
         return self.__values[2][0]
-    @__20.setter
-    def __20( self, value ):
+    @_20.setter
+    def _20( self, value ):
         self.__values[2][0] = value
-    @__20.deleter
-    def __20( self ):
+    @_20.deleter
+    def _20( self ):
         pass
 
     @property
-    def __21( self ):
+    def _21( self ):
         return self.__values[2][1]
-    @__21.setter
-    def __21( self, value ):
+    @_21.setter
+    def _21( self, value ):
         self.__values[2][1] = value
-    @__21.deleter
-    def __21( self ):
+    @_21.deleter
+    def _21( self ):
         pass
 
     @property
-    def __22( self ):
+    def _22( self ):
         return self.__values[2][2]
-    @__22.setter
-    def __22( self, value ):
+    @_22.setter
+    def _22( self, value ):
         self.__values[2][2] = value
-    @__22.deleter
-    def __2( self ):
+    @_22.deleter
+    def _22( self ):
         pass
     

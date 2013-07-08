@@ -73,12 +73,12 @@ class Transformations:
         Tx = - agentPosition.dot( agentHeading )
         Ty = - agentPosition.dot( agentSide )
         # create a transformation matrix
-        matTrans.__00 = agentHeading.x
-        matTrans.__01 = agentSide.x
-        matTrans.__10 = agentHeading.y
-        matTrans.__11 = agentSide.y
-        matTrans.__20 = Tx
-        matTrans.__21 = Ty
+        matTrans._00 = agentHeading.x
+        matTrans._01 = agentSide.x
+        matTrans._10 = agentHeading.y
+        matTrans._11 = agentSide.y
+        matTrans._20 = Tx
+        matTrans._21 = Ty
         
         # transform the vertices
         matTrans.TransformVector2D( transPoint )
@@ -96,10 +96,10 @@ class Transformations:
         transPoint = deepcopy(vector)
         matTrans = Matrix3x3()
         # create a transformation matrix
-        matTrans.__00 = agentHeading.x
-        matTrans.__01 = agentSide.x
-        matTrans.__10 = agentHeading.y
-        matTrans.__11 = agentSide.y
+        matTrans._00 = agentHeading.x
+        matTrans._01 = agentSide.x
+        matTrans._10 = agentHeading.y
+        matTrans._11 = agentSide.y
         
         # transform the vertices
         matTrans.TransformVector2D( transPoint )

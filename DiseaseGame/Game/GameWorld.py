@@ -42,7 +42,7 @@ class GameWorld(object):
     CellsX = 5
     CellsY = 4
 
-    MultiThreadUpdate = False
+    MultiThreadUpdate = True
 
     def __init__(self):
         self.Pause = False
@@ -66,6 +66,31 @@ class GameWorld(object):
         newBuilding.IsObstacle = True
         newCity.AddBuilding( newBuilding )
         self.Buildings.append( newBuilding )
+
+        newBuilding2 = Building( Vector2D(300, 400), 50 )
+        newBuilding2.IsObstacle = True
+        newCity.AddBuilding( newBuilding2 )
+        self.Buildings.append( newBuilding2 )
+
+        newBuilding3 = Building( Vector2D(700, 200), 30 )
+        newBuilding3.IsObstacle = True
+        newCity.AddBuilding( newBuilding3 )
+        self.Buildings.append( newBuilding3 )
+
+        newBuilding4 = Building( Vector2D(800, 500), 20 )
+        newBuilding4.IsObstacle = True
+        newCity.AddBuilding( newBuilding4 )
+        self.Buildings.append( newBuilding4 )
+
+        newBuilding5 = Building( Vector2D(1000, 600), 25 )
+        newBuilding5.IsObstacle = True
+        newCity.AddBuilding( newBuilding5 )
+        self.Buildings.append( newBuilding5 )
+
+        newBuilding6 = Building( Vector2D(400, 600), 50 )
+        newBuilding6.IsObstacle = True
+        newCity.AddBuilding( newBuilding6 )
+        self.Buildings.append( newBuilding6 )
         ##############################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --------------------- End Test 
 
         # Set up roads
