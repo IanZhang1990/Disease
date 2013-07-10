@@ -42,7 +42,7 @@ class GameWorld(object):
     CellsX = 5
     CellsY = 4
 
-    MultiThreadUpdate = True
+    MultiThreadUpdate = False
 
     def __init__(self):
         self.Pause = False

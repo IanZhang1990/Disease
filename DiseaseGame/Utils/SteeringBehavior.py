@@ -81,6 +81,23 @@ class SteeringBehavior(object):
         self.WaypointSeekDistSq = 400.0                                                                 # the distance (squared) a vehicle has to be from a path waypoint before it starts seeking to the next waypoint
         self.CellSpaceOn = True
         self.SummingMethod = SummingMethod.WEIGHTED_AVG;
+
+        # Parameters for some behaviors
+        self.WeightCohesion = float(parmLoader.Parameters.get( " CohesionWeight", 2.0 ))
+        self.WeightAlignment = float(parmLoader.Parameters.get("AlignmentWeight", 1.0))
+        self.WeightSeparation = float(parmLoader.Parameters.get("SeparationWeight", 1.0))
+        self.WeightObstacleAvoidance = float(parmLoader.Parameters.get('ObstacleAvoidanceWeight', 10.0))
+        self.WeightWander = float(parmLoader.Parameters.get("WanderWeight", 1.0))
+        self.WeightSeek = float( parmLoader.Parameters.get("SeekWeight", 1.0))
+        self.WeightFlee = float( parmLoader.Parameters.get("FleeWeight", 1.0) )
+        self.WeightArrive = float( parmLoader.Parameters.get("ArriveWeight", 1.0))
+        self.WeightPursuit = float( parmLoader.Parameters.get("PursuitWeight", 1.0))
+        self.WeightOffsetPursuit = float( parmLoader.Parameters.get("OffsetPursuitWeight", 1.0))
+        self.WeightInterpose = float( parmLoader.Parameters.get("InterposeWeight", 1.0))
+        self.WeightHide = float( parmLoader.Parameters.get("HideWeight", 1.0))
+        self.WeightEvade = float( parmLoader.Parameters.get("EvadeWeight", 0.01))
+        self.WeightFollowPath = float( parmLoader.Parameters.get("FollowPathWeight", 0.05))
+
         #Arrive makes use of these to determine how quickly a vehicle should decelerate to its target
         self.ArriveMode = ArriveMode.NORMAL                                                      # By default, the arrive mode is normal
 
@@ -148,45 +165,42 @@ class SteeringBehavior(object):
                     if building.IsObstacle:
                         obstaclelist.append( building )
                         pass
-            avoidForce = self.ObstacleAvoidance( obstaclelist )
+            avoidForce = self.ObstacleAvoidance( obstaclelist ) * self.WeightObstacleAvoidance
             self.SteeringForce += avoidForce
 
         if self.On( BehaviorType.EVADE ):
             if self.TargetAgent1 is not None:
-                self.SteeringForce += self.Evade()     ##################################### NOT FINISHED IN THIS LINE
-        if self.On( BehaviorType.FLEE ):
-            # TODO: Flee
-                pass
+                self.SteeringForce += self.Evade( self.SetTargetAgent1 ) * self.WeightEvade
+
 
         # The next three can be combined for flocking behavior
         if not self.CellSpaceOn:
-            if self.On( BehaviorType.SEPARATION ):
-                # TODO: Sepration
-                #self.SteeringForce += self.Separation( self.Owener.World.People ) * 
-                pass
-            if self.On( BehaviorType.ALLIGNMENT ):
-                # TODO: Allignment
-                pass
-            if self.On( BehaviorType.COHESION ):
-                # TODO: Cohesion
-                pass
+            pass                                                    ########### Since we always use spacial partition, this is not necessary
         else:
             if self.On( BehaviorType.SEPARATION ):
-                # TODO: Sepration
+                self.SteeringForce += self.Separation( self.Owener.World.People ) * self.WeightSeparation
                 pass
             if self.On( BehaviorType.ALLIGNMENT ):
-                # TODO: Allignment
+                self.SteeringForce += self.Alignment( self.Owener.World.People ) * self.WeightAlignment
                 pass
             if self.On( BehaviorType.COHESION ):
-                # TODO: Cohesion
+                self.SteeringForce += self.Cohesion( self.Owener.World.People ) * self.WeightCohesion
                 pass
-            pass
 
+        # TODO: A lot of things you should do here.
         if self.On( BehaviorType.WANDER ):
             self.SteeringForce += self.Wander() * self.WanderWeight
             pass
 
-        # TODO: A lot of things you should do here.
+        if self.On( BehaviorType.SEEK ):
+            # TODO: Flee
+                pass
+        
+        if self.On( BehaviorType.WANDER ):
+            self.SteeringForce += self.Wander() * self.WanderWeight
+            pass
+
+        # make sure this steering force is not larger than the max force allowed
         self.SteeringForce.Truncate( self.Owener.MaxForce )
 
         return self.SteeringForce
