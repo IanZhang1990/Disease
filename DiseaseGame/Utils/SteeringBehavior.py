@@ -11,6 +11,7 @@ from Math.Vector import Vector2D
 from Math import Math2D
 from Game import GameObject
 import Math
+import Game
 
 
 class SteeringParmLoader( ParameterLoader ):
@@ -193,12 +194,34 @@ class SteeringBehavior(object):
             pass
 
         if self.On( BehaviorType.SEEK ):
-            # TODO: Flee
-                pass
-        
-        if self.On( BehaviorType.WANDER ):
-            self.SteeringForce += self.Wander() * self.WanderWeight
+            self.SteeringForce += self.Seek( self.Owener.World.Crosshair ) * self.WeightSeek
             pass
+        
+        if self.On( BehaviorType.FLEE ):
+            self.SteeringForce += self.Flee( self.Owener.World.Crosshair ) * self.WeightFlee
+            pass
+
+        if self.On( BehaviorType.ARRIVE ):
+            self.SteeringForce += self.Arrive( self.Owener.World.Crosshair, self.ArriveMode ) * self.WeightArrive
+
+        if self.On( BehaviorType.PURSUIT ) and self.TargetAgent1 is not None:
+            self.SteeringForce += self.Pursuit( self.TargetAgent1 ) * self.WeightPursuit
+
+        if self.On( BehaviorType.OFFSET_PURSUIT ):
+            # TODO: OFFSET_PURSUIT
+            pass
+
+        if self.On( BehaviorType.INTERPOSE ):
+            if self.TargetAgent1 is not None and self.TargetAgent2 is not Nones:
+                self.SteeringForce += self.Interpose( self.TargetAgent1, self.TargetAgent2 ) * self.WeightInterpose;
+
+        if self.On( BehaviorType.HIDE ) and self.TargetAgent1 is not None:
+            # TODO: HIDE
+            pass
+
+        if self.On( BehaviorType.FOLLOW_PATH ):
+            self.SteeringForce += self.FollowPath() * self.WeightFollowPath
+        
 
         # make sure this steering force is not larger than the max force allowed
         self.SteeringForce.Truncate( self.Owener.MaxForce )
@@ -385,7 +408,31 @@ class SteeringBehavior(object):
             return self.Arrive( self.Path.CurrWayPoint, ArriveMode.NORMAL )
         pass
 
+    def Interpose( self, target1, target2 ):
+        """Given two agents, this method returns a force that attempts to 
+        position the vehicle between them"""
+        if isinstance( target1, GameObject.GameObject ) and isinstance( target2, GameObject.GameObject ):
+            # first we need to figure out where the two agents are going to be at 
+            # time T in the future. This is approximated by determining the time
+            # taken to reach the mid way point at the current time at at max speed.
+            midPoint = (target1.Pos + target2.Pos) / 2.0
+            
+            timeToReachMidPoint = float( self.Owener.Pos.get_distance( midPoint ) / self.Owener.MaxSpeed )
 
+            # we assume that agent A and agent B will continue on a
+            # straight trajectory and extrapolate to get their future positions
+            APos = target1.Pos
+            BPos =target2.Pos
+            if isinstance( target1, Game.Man.Man ):
+                APos =  APos + target1.Velocity *timeToReachMidPoint
+            if isinstance( target2, Game.Man.Man ):
+                BPos =  BPos + target2.Velocity *timeToReachMidPoint
+
+            # calculate the mid point of the predicted position
+            midPoint = (APos + BPos) / 2.0
+
+            # steer to Arrive at it
+            return self.Arrive( midPoint, ArriveMode.FAST )
 
 #----------------- Group Behaviors ----------------
     def Cohesion( self, neighbors ):

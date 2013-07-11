@@ -47,6 +47,9 @@ class GameWorld(object):
     def __init__(self):
         self.Pause = False
 
+        #the position of the crosshair
+        self.Crosshair = Vector2D( self.WorldWidth / 2.0, self.WorldHeight/2.0 ) 
+
         border = 30;
         self.ManPath = Path( 8, border, border, GameWorld.WorldWidth-border, GameWorld.WorldHeight-border, True)
         
@@ -160,3 +163,9 @@ class GameWorld(object):
                 ObstBuilding.append( building )
         Game.GameObject.ObjectFunctionTemplate.TagNeighbors( entity, ObstBuilding, range )
         pass
+
+    def SetCrosshair( self, VectorOrPoints ):
+        if isinstance( VectorOrPoints, Vector2D ):
+            self.Crosshair = VectorOrPoints
+        else:
+            pass
