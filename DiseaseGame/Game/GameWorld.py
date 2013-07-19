@@ -65,6 +65,7 @@ class GameWorld(object):
         newCity = City( Vector2D(self.WorldWidth / 2.0, self.WorldHeight / 2.0 ) )
         self.Cities.append( newCity )
 
+        """
         newBuilding = Building( Vector2D(600, 400), 40 )
         newBuilding.IsObstacle = True
         newCity.AddBuilding( newBuilding )
@@ -94,6 +95,7 @@ class GameWorld(object):
         newBuilding6.IsObstacle = True
         newCity.AddBuilding( newBuilding6 )
         self.Buildings.append( newBuilding6 )
+        """
         ##############################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --------------------- End Test 
 
         # Set up roads

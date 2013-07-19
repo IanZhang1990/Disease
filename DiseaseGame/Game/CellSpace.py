@@ -47,7 +47,6 @@ class SpacePartition:
             @cellsY: number of cells vertically
             @maxEntities: maximum number of entities to add"""
         self.Cells = list()
-        self.Neighbors = list()
         self.CurrentNeighbor = None
         self.SpaceWidth = width
         self.SpaceHeight = height
@@ -56,7 +55,10 @@ class SpacePartition:
         self.NumOfEntities = 0
         self.MaxEntities = maxEntities
         self.GameWorld = gameWorld
-        
+        self.Neighbors = list()
+        for idx in range( 0, self.MaxEntities ):
+            self.Neighbors.append( None )
+
         # Calculate bounds of each cell
         self.CellSizeX = width / cellsX
         self.CellSizeY = height/ cellsY
@@ -140,6 +142,7 @@ class SpacePartition:
         Parameters:
             @targetPos: Vector2D
             @queryradius: float"""
+
         curNbor = self.Neighbors[0]
         curNborIdx = 0
         # create the query box that is the bounding box of the target's query area

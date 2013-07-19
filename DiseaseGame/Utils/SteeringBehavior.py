@@ -116,7 +116,8 @@ class SteeringBehavior(object):
 
         # TODO: REMOVE the next several lines. There are simply for testing.
         self.WanderOn()
-        self.ObstacleAvoidanceOn()
+        #self.ObstacleAvoidanceOn()
+        #self.CohesionOn()
 
 ######################################################################################
     def Calculate( self ):
@@ -448,10 +449,10 @@ class SteeringBehavior(object):
         # iterate through the neighbors and sum up all the position vectors
         neighborCount = 0
         entity = self.Owener.World.CellSpace.FirstNeighbor()
-        while not self.Owener.World.CellSpace.EndNeighbor():
+        while entity is not None and not self.Owener.World.CellSpace.EndNeighbor():
             if entity != self.Owener:
                 centerOfMass = centerOfMass + entity.Pos
-                neighborCount = neightborCount + 1
+                neighborCount = neighborCount + 1
                 pass
             entity = self.Owener.World.CellSpace.NextNeighbor()
             pass
