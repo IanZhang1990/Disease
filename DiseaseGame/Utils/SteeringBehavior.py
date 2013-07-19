@@ -118,6 +118,7 @@ class SteeringBehavior(object):
         self.WanderOn()
         #self.ObstacleAvoidanceOn()
         #self.CohesionOn()
+        self.AlignmentOn()
 
 ######################################################################################
     def Calculate( self ):
@@ -477,7 +478,7 @@ class SteeringBehavior(object):
         while not self.Owener.World.CellSpace.EndNeighbor():
             if entity != self.Owener:
                 avgHeading = avgHeading + entity.Heading
-                neighborCount = neightborCount + 1
+                neighborCount = neighborCount + 1
                 pass
             entity = self.Owener.World.CellSpace.NextNeighbor()
             pass
