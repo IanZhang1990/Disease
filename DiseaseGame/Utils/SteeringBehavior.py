@@ -117,8 +117,8 @@ class SteeringBehavior(object):
         # TODO: REMOVE the next several lines. There are simply for testing.
         self.WanderOn()
         #self.ObstacleAvoidanceOn()
-        #self.CohesionOn()
-        self.AlignmentOn()
+        self.CohesionOn()
+        
 
 ######################################################################################
     def Calculate( self ):
@@ -475,7 +475,7 @@ class SteeringBehavior(object):
         avgHeading = Vector2D( 0, 0 )
         neighborCount = 0
         entity = self.Owener.World.CellSpace.FirstNeighbor()
-        while not self.Owener.World.CellSpace.EndNeighbor():
+        while not self.Owener.World.CellSpace.EndNeighbor() and entity is not None:
             if entity != self.Owener:
                 avgHeading = avgHeading + entity.Heading
                 neighborCount = neighborCount + 1
@@ -496,7 +496,7 @@ class SteeringBehavior(object):
         steeringForce = Vector2D( 0, 0 )
         neighborCount = 0
         entity = self.Owener.World.CellSpace.FirstNeighbor()
-        while not self.Owener.World.CellSpace.EndNeighbor():
+        while not self.Owener.World.CellSpace.EndNeighbor() and entity is not None:
             if entity != self.Owener:
                 toAgent = self.Owener.Pos - entity.Pos
                 steeringForce = steeringForce + toAgent.normalized() / toAgent.get_length()

@@ -1,7 +1,7 @@
 
-AgentNumber       = 160
+AgentNumber       = 100
 Mass              = 1.2
 Size		  = 5
 MaxForce	  = 100.0
-MaxSpeed          = 30.0
+MaxSpeed          = 20.0
 ViewDistance      = 30.0

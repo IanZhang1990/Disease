@@ -156,7 +156,8 @@ class SpacePartition:
                 # add any entities found within query radius to the neighbor list
                 for entity in curCell.Members:
                     if entity.Pos.get_dist_sqrd( targetPos ) < queryRadius * queryRadius:
-                        self.Neighbors.remove( curNbor )
+                        #self.Neighbors.remove( curNbor )  ------ This code seems to be wrong
+                        self.Neighbors.pop( curNborIdx )
                         self.Neighbors.insert( curNborIdx, entity )
                         curNborIdx = curNborIdx + 1
                         curNbor = curNbor = self.Neighbors[curNborIdx]            
